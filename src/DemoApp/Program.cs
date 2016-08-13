@@ -1,7 +1,7 @@
 ﻿using ConsoleUI;
 using System;
 
-namespace ConsoleApplication1
+namespace DemoApp
 {
     internal class Program
     {
@@ -10,10 +10,10 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-            //Console.BufferHeight = 40;
-            Console.BufferWidth = 132;
             Console.WindowHeight = 40;
+            Console.BufferHeight = 40;
             Console.WindowWidth = 132;
+            Console.BufferWidth = 132;
 
             Utils.SetWindowPosition(0, 0);
 

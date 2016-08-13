@@ -6,10 +6,14 @@ namespace ConsoleUI
 {
     public class Control : INotifyPropertyChanged
     {
-        public ConsoleColor BackgroundColor = ConsoleColor.Blue;
-        public ConsoleColor FocusBackgroundColor = ConsoleColor.Blue;
-        public ConsoleColor FocusForegroundColor = ConsoleColor.Gray;
-        public ConsoleColor ForegroundColor = ConsoleColor.Gray;
+        //public ConsoleColor BackgroundColor = ConsoleColor.Blue;
+        //public ConsoleColor FocusBackgroundColor = ConsoleColor.Blue;
+        //public ConsoleColor FocusForegroundColor = ConsoleColor.Gray;
+        //public ConsoleColor ForegroundColor = ConsoleColor.Gray;
+        public ConsoleColor BackgroundColor = Console.BackgroundColor;
+        public ConsoleColor FocusBackgroundColor = Console.BackgroundColor;
+        public ConsoleColor FocusForegroundColor = Console.ForegroundColor;
+        public ConsoleColor ForegroundColor = Console.ForegroundColor;
 
         public bool HasShadow = false;
         protected int X;

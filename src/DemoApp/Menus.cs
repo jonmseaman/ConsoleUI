@@ -1,6 +1,6 @@
 ﻿using ConsoleUI;
 
-namespace ConsoleApplication1
+namespace DemoApp
 {
     internal static class Menus
     {

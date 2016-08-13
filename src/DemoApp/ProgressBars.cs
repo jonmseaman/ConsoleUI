@@ -1,7 +1,7 @@
 ﻿using ConsoleUI;
 using System;
 
-namespace ConsoleApplication1
+namespace DemoApp
 {
     internal static class ProgressBars
     {
