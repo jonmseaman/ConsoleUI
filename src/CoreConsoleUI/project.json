@@ -10,6 +10,11 @@
     "net451": { },
     "netstandard1.6": {
       "imports": "dnxcore50"
-    }
+    },
+  },
+
+  "runtimes": {
+    "win10-x64": {},
+    "win7-x64": {}
   }
 }
