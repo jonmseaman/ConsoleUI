@@ -10,10 +10,14 @@ namespace DemoApp
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
+            if (Console.BufferHeight < 40) {
+                Console.BufferHeight = 40;
+            }
+            if (Console.BufferWidth < 132) {
+                Console.BufferWidth = 132;
+            }
             Console.WindowHeight = 40;
-            Console.BufferHeight = 40;
             Console.WindowWidth = 132;
-            Console.BufferWidth = 132;
 
             Utils.SetWindowPosition(0, 0);
 

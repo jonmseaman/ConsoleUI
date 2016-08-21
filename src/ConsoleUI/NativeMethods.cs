@@ -35,7 +35,6 @@ namespace ConsoleUI
         {
             get
             {
-                //Initialize();
                 return GetConsoleWindow();
             }
         }

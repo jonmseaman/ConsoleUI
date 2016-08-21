@@ -4,10 +4,6 @@ namespace ConsoleUI
 {
     public abstract class InputControl : Control
     {
-        public InputControl() : base()
-        {
-        }
-
         protected override void OnEnter()
         {
             Console.CursorVisible = true;
