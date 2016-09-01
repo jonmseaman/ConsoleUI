@@ -24,11 +24,19 @@ namespace ConsoleUI
             this.height = height;
 
             Name = name;
-
-            Console.WindowHeight = height;
-            Console.WindowWidth = width;
-            Console.BufferHeight = Console.WindowHeight;
-            Console.BufferWidth = Console.WindowWidth;
+            try
+            {
+                Console.WindowHeight = height;
+                Console.WindowWidth = width;
+                Console.BufferHeight = Console.WindowHeight;
+                Console.BufferWidth = Console.WindowWidth;
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // TODO: Failed to resize window message box.
+                width = Console.WindowWidth;
+                height = Console.WindowHeight;
+            }
 
             buffer = new Buffer(0, 0, height, width);
 

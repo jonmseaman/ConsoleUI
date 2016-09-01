@@ -10,14 +10,24 @@ namespace DemoApp
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-            if (Console.BufferHeight < 40) {
+            if (Console.BufferHeight < 40)
+            {
                 Console.BufferHeight = 40;
             }
-            if (Console.BufferWidth < 132) {
+            if (Console.BufferWidth < 132)
+            {
                 Console.BufferWidth = 132;
             }
-            Console.WindowHeight = 40;
-            Console.WindowWidth = 132;
+
+            try
+            {
+                Console.WindowHeight = 40;
+                Console.WindowWidth = 132;
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // Can only change the window size on Windows.                
+            }
 
             Utils.SetWindowPosition(0, 0);
 
