@@ -4,23 +4,23 @@ namespace DemoApp
 {
     internal static class KeyPressedEvents
     {
-        internal static void SetupKeyPressedEventScreens(ScreenCollection screens)
+        internal static void SetupKeyPressedEventwindow(Window window)
         {
-            ListBoxPopup(screens);
+            ListBoxPopup(window);
         }
 
-        private static void ListBoxPopup(ScreenCollection screens)
+        private static void ListBoxPopup(Window window)
         {
-            var screen = new Screen("List Box Pop Up");
+            var page = new Page("List Box Pop Up");
 
-            MenuBar menuBar = Menus.SetupMenuBar(screen);
+            MenuBar menuBar = Menus.SetupMenuBar(page);
             
             var control1 = new ListBox();
 
             control1.Left = 0;
             control1.Top = 1;
-            control1.Width = screen.Width;
-            control1.Height = screen.Height - 2;
+            control1.Width = page.Width;
+            control1.Height = page.Height - 2;
             control1.BorderStyle = BorderStyle.Double;
 
             for (int i = 0; i < 150; i++)
@@ -28,13 +28,13 @@ namespace DemoApp
                 control1.Items.Add(string.Format("Item {0} - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", i + 1));
             }
 
-            screen.Controls.Add(control1);
+            page.Controls.Add(control1);
 
             var textBox = new TextBox();
             textBox.BorderStyle = BorderStyle.Double;
             textBox.Width = 8;
-            textBox.Left = (screen.Width / 2) - (textBox.Width / 2);
-            textBox.Top = (screen.Height / 2) - (textBox.Height / 2);
+            textBox.Left = (page.Width / 2) - (textBox.Width / 2);
+            textBox.Top = (page.Height / 2) - (textBox.Height / 2);
             textBox.MaxLength = 6;
             textBox.BackgroundColor = System.ConsoleColor.DarkGreen;
             textBox.FocusBackgroundColor = System.ConsoleColor.DarkGreen;
@@ -42,13 +42,13 @@ namespace DemoApp
             textBox.TreatEnterKeyAsTab = false;
             textBox.HasShadow = true;
 
-            screen.Controls.Add(textBox);
+            page.Controls.Add(textBox);
 
-            screen.Footer.Text = screen.Name + ". Press C to popup a text box, enter or escape.";
+            page.Footer.Text = page.Name + ". Press C to popup a text box, enter or escape.";
 
-            screen.Controls.Add(menuBar);
+            page.Controls.Add(menuBar);
 
-            screens.Add(screen);
+            window.Add(page);
 
             control1.KeyPressed += (s, e) =>
             {
@@ -62,12 +62,12 @@ namespace DemoApp
 
             control1.Selected += (s, e) =>
             {
-                screen.Footer.Text = control1.SelectedItem;
+                page.Footer.Text = control1.SelectedItem;
             };
 
             textBox.TextChanged += (s, e) =>
             {
-                screen.Footer.Text = string.Format("{0} => {1}", e.OrignalText ?? string.Empty, e.NewText);
+                page.Footer.Text = string.Format("{0} => {1}", e.OrignalText ?? string.Empty, e.NewText);
             };
 
             textBox.Leave += (s, e) =>

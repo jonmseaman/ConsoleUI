@@ -2,26 +2,26 @@
 
 namespace DemoApp
 {
-    internal static class LoginScreen
+    internal static class LoginPage
     {
-        internal static void SetupLoginScreen(ScreenCollection screens)
+        internal static void SetupLoginPage(Window window)
         {
-            ListBoxPopup(screens);
+            ListBoxPopup(window);
         }
 
-        private static void ListBoxPopup(ScreenCollection screens)
+        private static void ListBoxPopup(Window window)
         {
-            var screen = new ConsoleUI.LoginScreen();
-            screen.Username = "admin";
+            var page = new ConsoleUI.LoginPage();
+            page.Username = "admin";
 
-            screen.Footer.Text = "Try admin admin.";
+            page.Footer.Text = "Try admin admin.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.Login += Screen_Login;
+            page.Login += Page_Login;
         }
 
-        private static void Screen_Login(object sender, LoginEventArgs e)
+        private static void Page_Login(object sender, LoginEventArgs e)
         {
             System.Threading.Thread.Sleep(2000);
 

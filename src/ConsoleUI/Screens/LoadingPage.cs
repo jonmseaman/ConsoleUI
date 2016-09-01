@@ -2,7 +2,7 @@
 
 namespace ConsoleUI
 {
-    public class LoadingScreen : Screen
+    public class LoadingPage : Page
     {
         private Label label;
 
@@ -10,7 +10,7 @@ namespace ConsoleUI
 
         private Rectangle rectangle;
 
-        public LoadingScreen(string name) : base(name)
+        public LoadingPage(string name) : base(name)
         {
             SetupControls();
         }

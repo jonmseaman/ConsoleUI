@@ -4,16 +4,16 @@ namespace DemoApp
 {
     internal static class ListBoxes
     {
-        internal static void SetupListBoxScreens(ScreenCollection screens)
+        internal static void SetupListBoxwindow(Window window)
         {
-            BasicListBoxScreen(screens);
-            SingleBorderListBoxScreen(screens);
-            DoubleBorderListBoxScreen(screens);
+            BasicListBoxPage(window);
+            SingleBorderListBoxPage(window);
+            DoubleBorderListBoxPage(window);
         }
 
-        private static void BasicListBoxScreen(ScreenCollection screens)
+        private static void BasicListBoxPage(Window window)
         {
-            var screen = new Screen("Basic List Boxes");
+            var page = new Page("Basic List Boxes");
             
             var control1 = new ListBox();
 
@@ -51,18 +51,18 @@ namespace DemoApp
                 control3.Items.Add(string.Format("Item {0}", i + 1));
             }
             
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press enter or escape.";
+            page.Footer.Text = page.Name + ". Press enter or escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
-        private static void SingleBorderListBoxScreen(ScreenCollection screens)
+        private static void SingleBorderListBoxPage(Window window)
         {
-            var screen = new Screen("Single Border List Boxes");
-            screen.SuspendLayout();
+            var page = new Page("Single Border List Boxes");
+            page.SuspendLayout();
 
             var control1 = new ListBox();
 
@@ -103,17 +103,17 @@ namespace DemoApp
                 control3.Items.Add(string.Format("Item {0}", i + 1));
             }
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press enter or escape.";
+            page.Footer.Text = page.Name + ". Press enter or escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
-        private static void DoubleBorderListBoxScreen(ScreenCollection screens)
+        private static void DoubleBorderListBoxPage(Window window)
         {
-            var screen = new Screen("Double Border List Boxes");
+            var page = new Page("Double Border List Boxes");
 
             var control1 = new ListBox();
 
@@ -157,13 +157,13 @@ namespace DemoApp
                 control3.Items.Add(string.Format("Item {0}", i + 1));
             }
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press enter or escape.";
+            page.Footer.Text = page.Name + ". Press enter or escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
     }
 }

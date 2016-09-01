@@ -5,14 +5,14 @@ namespace DemoApp
 {
     internal static class ProgressBars
     {
-        internal static void SetupProgressBars(ScreenCollection screens)
+        internal static void SetupProgressBars(Window window)
         {
-            TestProgressBars(screens);
+            TestProgressBars(window);
         }
 
-        private static void TestProgressBars(ScreenCollection screens)
+        private static void TestProgressBars(Window window)
         {
-            var screen = new Screen("Progress Bars - No Border");
+            var page = new Page("Progress Bars - No Border");
 
             var control1 = new ProgressBar();
 
@@ -21,7 +21,7 @@ namespace DemoApp
             control1.Width = 20;
             control1.BlockColor = ConsoleColor.Yellow;
 
-            screen.Controls.Add(control1);
+            page.Controls.Add(control1);
 
             var control2 = new ProgressBar();
 
@@ -30,7 +30,7 @@ namespace DemoApp
             control2.Width = 5;
             control2.BorderStyle = BorderStyle.Single;
 
-            screen.Controls.Add(control2);
+            page.Controls.Add(control2);
 
             var control3 = new ProgressBar();
 
@@ -41,7 +41,7 @@ namespace DemoApp
             control3.BlockColor = ConsoleColor.Red;
             control3.HasShadow = true;
 
-            screen.Controls.Add(control3);
+            page.Controls.Add(control3);
 
             var control4 = new ProgressBar();
 
@@ -53,13 +53,13 @@ namespace DemoApp
             control4.HasShadow = true;
             control4.ProgressBarStyle = ProgressBarStyle.Marquee;
 
-            screen.Controls.Add(control4);
+            page.Controls.Add(control4);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.Shown += (s, e) =>
+            page.Shown += (s, e) =>
             {
                 while (control1.Value < control1.Maximum)
                 {
@@ -69,7 +69,7 @@ namespace DemoApp
                     control2.Increment(10);
                     control3.Increment(10);
 
-                    screen.Footer.Text = string.Format("Value: {0}", control1.Value);
+                    page.Footer.Text = string.Format("Value: {0}", control1.Value);
                 }
             };
         }

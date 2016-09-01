@@ -5,33 +5,33 @@ namespace DemoApp
 {
     internal static class Labels
     {
-        internal static void SetupLabelScreens(ScreenCollection screens)
+        internal static void SetupLabelwindow(Window window)
         {
-            LabelScreen(screens);
-            SingleBorderLabelScreen(screens);
-            DoubleBorderLabelScreen(screens);
+            LabelPage(window);
+            SingleBorderLabelPage(window);
+            DoubleBorderLabelPage(window);
 
-            ShadowLabelScreen(screens);
-            ShadowSingleBorderLabelScreen(screens);
-            ShadowDoubleBorderLabelScreen(screens);
+            ShadowLabelPage(window);
+            ShadowSingleBorderLabelPage(window);
+            ShadowDoubleBorderLabelPage(window);
         }
 
-        private static void DoubleBorderLabelScreen(ScreenCollection screens)
+        private static void DoubleBorderLabelPage(Window window)
         {
-            var screen = new Screen("Double Border Labels");
+            var page = new Page("Double Border Labels");
 
             var control1 = new Label("This is a left aligned label (full width, double border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width;
+            control1.Width = page.Width;
             control1.BorderStyle = BorderStyle.Double;
 
             var control2 = new Label("This is a centered label (full width, double border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.TextAlign = TextAlign.Center;
             control2.BorderStyle = BorderStyle.Double;
 
@@ -39,78 +39,78 @@ namespace DemoApp
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
             control3.BorderStyle = BorderStyle.Double;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };
         }
 
-        private static void LabelScreen(ScreenCollection screens)
+        private static void LabelPage(Window window)
         {
-            var screen = new Screen("Basic Labels");
+            var page = new Page("Basic Labels");
 
             var control1 = new Label("This is a left aligned label (full width, no border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width;
+            control1.Width = page.Width;
 
             var control2 = new Label("This is a centered label (full width, no border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.TextAlign = TextAlign.Center;
 
             var control3 = new Label("This is a right aligned label (full width, no border).");
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };
         }
 
-        private static void ShadowDoubleBorderLabelScreen(ScreenCollection screens)
+        private static void ShadowDoubleBorderLabelPage(Window window)
         {
-            var screen = new Screen("Double Border Labels");
+            var page = new Page("Double Border Labels");
 
             var control1 = new Label("This is a left aligned label (shadow, double border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width - 2;
+            control1.Width = page.Width - 2;
             control1.BorderStyle = BorderStyle.Double;
 
             var control2 = new Label("This is a centered label (shadow, double border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height + 2;
-            control2.Width = screen.Width - 1;
+            control2.Width = page.Width - 1;
             control2.TextAlign = TextAlign.Center;
             control2.BorderStyle = BorderStyle.Double;
 
@@ -118,7 +118,7 @@ namespace DemoApp
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height + 2;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
             control3.BorderStyle = BorderStyle.Double;
 
@@ -126,78 +126,78 @@ namespace DemoApp
             control2.HasShadow = true;
             control3.HasShadow = true;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };
         }
 
-        private static void ShadowLabelScreen(ScreenCollection screens)
+        private static void ShadowLabelPage(Window window)
         {
-            var screen = new Screen("Basic Labels");
+            var page = new Page("Basic Labels");
 
             var control1 = new Label("This is a left aligned label (shadow, no border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width - 2;
+            control1.Width = page.Width - 2;
 
             var control2 = new Label("This is a centered label (shadow, no border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height + 2;
-            control2.Width = screen.Width - 1;
+            control2.Width = page.Width - 1;
             control2.TextAlign = TextAlign.Center;
 
             var control3 = new Label("This is a right aligned label (shadow, full width, no border).");
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height + 2;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
 
             control1.HasShadow = true;
             control2.HasShadow = true;
             control3.HasShadow = true;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };
         }
 
-        private static void ShadowSingleBorderLabelScreen(ScreenCollection screens)
+        private static void ShadowSingleBorderLabelPage(Window window)
         {
-            var screen = new Screen("Single Border Labels");
+            var page = new Page("Single Border Labels");
 
             var control1 = new Label("This is a left aligned label (shadow, single border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width - 2;
+            control1.Width = page.Width - 2;
             control1.BorderStyle = BorderStyle.Single;
 
             var control2 = new Label("This is a centered label (shadow, single border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height + 2;
-            control2.Width = screen.Width - 1;
+            control2.Width = page.Width - 1;
             control2.TextAlign = TextAlign.Center;
             control2.BorderStyle = BorderStyle.Single;
 
@@ -205,7 +205,7 @@ namespace DemoApp
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height + 2;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
             control3.BorderStyle = BorderStyle.Single;
 
@@ -213,36 +213,36 @@ namespace DemoApp
             control2.HasShadow = true;
             control3.HasShadow = true;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };
         }
 
-        private static void SingleBorderLabelScreen(ScreenCollection screens)
+        private static void SingleBorderLabelPage(Window window)
         {
-            var screen = new Screen("Single Border Labels");
+            var page = new Page("Single Border Labels");
 
             var control1 = new Label("This is a left aligned label (full width, single border).");
 
             control1.Left = 0;
             control1.Top = 0;
-            control1.Width = screen.Width;
+            control1.Width = page.Width;
             control1.BorderStyle = BorderStyle.Single;
 
             var control2 = new Label("This is a centered label (full width, single border).");
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.TextAlign = TextAlign.Center;
             control2.BorderStyle = BorderStyle.Single;
 
@@ -250,19 +250,19 @@ namespace DemoApp
 
             control3.Left = 0;
             control3.Top = control2.Top + control2.Height;
-            control3.Width = screen.Width;
+            control3.Width = page.Width;
             control3.TextAlign = TextAlign.Right;
             control3.BorderStyle = BorderStyle.Single;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press any key.";
+            page.Footer.Text = page.Name + ". Press any key.";
 
-            screens.Add(screen);
+            window.Add(page);
 
-            screen.AfterPaint += (s, e) =>
+            page.AfterPaint += (s, e) =>
             {
                 Console.ReadKey(true);
             };

@@ -2,7 +2,7 @@
 
 namespace ConsoleUI
 {
-    public class LoginScreen : Screen
+    public class LoginPage : Page
     {
         private Button cancelButton;
         private Label failureLabel;
@@ -14,11 +14,11 @@ namespace ConsoleUI
         private Label usernameLabel;
         private TextBox usernameTextBox;
 
-        public LoginScreen() : this("Login Screen")
+        public LoginPage() : this("Login Page")
         {
         }
 
-        public LoginScreen(string name) : base(name)
+        public LoginPage(string name) : base(name)
         {
             usernameLabel = new Label();
             passwordLabel = new Label();

@@ -4,33 +4,33 @@ namespace DemoApp
 {
     internal static class Menus
     {
-        internal static void SetupMenu(ScreenCollection screens)
+        internal static void SetupMenu(Window window)
         {
-            var screen = new Screen("Menus");
-            MenuBar menuBar = SetupMenuBar(screen);
+            var page = new Page("Menus");
+            MenuBar menuBar = SetupMenuBar(page);
 
-            screen.Controls.Add(menuBar);
+            page.Controls.Add(menuBar);
 
-            screens.Add(screen);
+            window.Add(page);
         }
 
-        internal static MenuBar SetupMenuBar(Screen screen)
+        internal static MenuBar SetupMenuBar(Page page)
         {
-            var menuBar = new MenuBar(screen);
+            var menuBar = new MenuBar(page);
             menuBar.Left = 0;
             menuBar.Top = 0;
-            menuBar.Width = screen.Width;
+            menuBar.Width = page.Width;
 
-            SetupFileMenu(screen, menuBar);
-            SetupEditMenu(screen, menuBar);
-            SetupViewMenu(screen, menuBar);
+            SetupFileMenu(page, menuBar);
+            SetupEditMenu(page, menuBar);
+            SetupViewMenu(page, menuBar);
 
             return menuBar;
         }
 
-        private static void SetupEditMenu(Screen screen, MenuBar menuBar)
+        private static void SetupEditMenu(Page page, MenuBar menuBar)
         {
-            var menu = new Menu(screen);
+            var menu = new Menu(page);
             menu.Text = "Edit";
 
             AddMenuItem(menu, "Cut");
@@ -41,9 +41,9 @@ namespace DemoApp
             menuBar.Menus.Add(menu);
         }
 
-        private static void SetupFileMenu(Screen screen, MenuBar menuBar)
+        private static void SetupFileMenu(Page page, MenuBar menuBar)
         {
-            var menu = new Menu(screen);
+            var menu = new Menu(page);
             menu.Text = "File";
 
             AddMenuItem(menu, "New");
@@ -62,18 +62,18 @@ namespace DemoApp
 
             menuItem.Selected += (s, e) =>
             {
-                ((Screen)menu.Owner).SetFooterText("Selected: " + ((MenuItem)s).Text);
+                ((Page)menu.Owner).SetFooterText("Selected: " + ((MenuItem)s).Text);
             };
 
             menuItem.Enter += (s, e) =>
             {
-                ((Screen)menu.Owner).SetFooterText("Enter: " + ((MenuItem)s).Text);
+                ((Page)menu.Owner).SetFooterText("Enter: " + ((MenuItem)s).Text);
             };
         }
 
-        private static void SetupViewMenu(Screen screen, MenuBar menuBar)
+        private static void SetupViewMenu(Page page, MenuBar menuBar)
         {
-            var menu = new Menu(screen);
+            var menu = new Menu(page);
             menu.Text = "Animals";
             
             AddMenuItem(menu, "Dog");

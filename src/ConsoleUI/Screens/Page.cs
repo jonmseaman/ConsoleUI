@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace ConsoleUI
 {
-    public class Screen : IControlContainer
+    public class Page : IControlContainer
     {
         public ConsoleColor BackgroundColor = ConsoleColor.Gray;
         public ConsoleColor ForegroundColor = ConsoleColor.DarkGray;
@@ -14,11 +14,11 @@ namespace ConsoleUI
         private Label footer;
         private bool visible;
 
-        public Screen(string name) : this(Console.WindowWidth, Console.WindowHeight, name)
+        public Page(string name) : this(Console.WindowWidth, Console.WindowHeight, name)
         {
         }
 
-        public Screen(int width, int height, string name)
+        public Page(int width, int height, string name)
         {
             this.width = width;
             this.height = height;

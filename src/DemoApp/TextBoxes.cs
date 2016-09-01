@@ -5,17 +5,17 @@ namespace DemoApp
 {
     internal static class TextBoxes
     {
-        internal static void SetupTextBoxScreens(ScreenCollection screens)
+        internal static void SetupTextBoxwindow(Window window)
         {
-            BasicTextBoxScreen(screens);
-            SingleBorderTextBoxScreen(screens);
-            DoubleBorderTextBoxScreen(screens);
-            MultilineBasicTextBoxScreen(screens);
+            BasicTextBoxPage(window);
+            SingleBorderTextBoxPage(window);
+            DoubleBorderTextBoxPage(window);
+            MultilineBasicTextBoxPage(window);
         }
 
-        private static void BasicTextBoxScreen(ScreenCollection screens)
+        private static void BasicTextBoxPage(Window window)
         {
-            var screen = new Screen("Basic Text Boxes");
+            var page = new Page("Basic Text Boxes");
             
             var control1 = new TextBox();
 
@@ -29,7 +29,7 @@ namespace DemoApp
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.TextAlign = TextAlign.Center;
 
             var control3 = new TextBox();
@@ -47,19 +47,19 @@ namespace DemoApp
             control4.MaxLength = 20;
             control4.TextAlign = TextAlign.Right;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
-            screen.Controls.Add(control4);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
+            page.Controls.Add(control4);
 
-            screen.Footer.Text = screen.Name + ". Press escape.";
+            page.Footer.Text = page.Name + ". Press escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
 
-        private static void DoubleBorderTextBoxScreen(ScreenCollection screens)
+        private static void DoubleBorderTextBoxPage(Window window)
         {
-            var screen = new Screen("Double Border Text Boxes");
+            var page = new Page("Double Border Text Boxes");
 
             var control1 = new TextBox();
 
@@ -73,7 +73,7 @@ namespace DemoApp
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.BorderStyle = BorderStyle.Double;
 
             var control3 = new TextBox();
@@ -84,18 +84,18 @@ namespace DemoApp
             control3.Width = control3.MaxLength;
             control3.BorderStyle = BorderStyle.Double;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press escape.";
+            page.Footer.Text = page.Name + ". Press escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
 
-        private static void MultilineBasicTextBoxScreen(ScreenCollection screens)
+        private static void MultilineBasicTextBoxPage(Window window)
         {
-            var screen = new Screen("Multiline Basic Text Boxes");
+            var page = new Page("Multiline Basic Text Boxes");
 
             var control1 = new TextBox();
 
@@ -113,7 +113,7 @@ namespace DemoApp
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height + 1;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.TextAlign = TextAlign.Center;
             control2.Height = 5;
             control2.Width = 20;
@@ -130,18 +130,18 @@ namespace DemoApp
             control3.Text = "Long text was here...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoLonger...";
             control3.BorderStyle = BorderStyle.Double;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press escape.";
+            page.Footer.Text = page.Name + ". Press escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
 
-        private static void SingleBorderTextBoxScreen(ScreenCollection screens)
+        private static void SingleBorderTextBoxPage(Window window)
         {
-            var screen = new Screen("Single Border Text Boxes");
+            var page = new Page("Single Border Text Boxes");
 
             var control1 = new TextBox();
 
@@ -155,7 +155,7 @@ namespace DemoApp
 
             control2.Left = 0;
             control2.Top = control1.Top + control1.Height;
-            control2.Width = screen.Width;
+            control2.Width = page.Width;
             control2.BorderStyle = BorderStyle.Single;
 
             var control3 = new TextBox();
@@ -167,13 +167,13 @@ namespace DemoApp
             control3.BorderStyle = BorderStyle.Single;
             control3.TextAlign = TextAlign.Center;
 
-            screen.Controls.Add(control1);
-            screen.Controls.Add(control2);
-            screen.Controls.Add(control3);
+            page.Controls.Add(control1);
+            page.Controls.Add(control2);
+            page.Controls.Add(control3);
 
-            screen.Footer.Text = screen.Name + ". Press escape.";
+            page.Footer.Text = page.Name + ". Press escape.";
 
-            screens.Add(screen);
+            window.Add(page);
         }
     }
 }

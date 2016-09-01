@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace ConsoleUI
 {
-    public class ScreenCollection : ICollection<Screen>
+    public class Window : ICollection<Page>
     {
-        private IList<Screen> list = new List<Screen>();
+        private IList<Page> list = new List<Page>();
 
         public int Count
         {
@@ -23,7 +23,7 @@ namespace ConsoleUI
             }
         }
 
-        public virtual Screen this[int index]
+        public virtual Page this[int index]
         {
             get
             {
@@ -31,7 +31,7 @@ namespace ConsoleUI
             }
         }
 
-        public void Add(Screen item)
+        public void Add(Page item)
         {
             list.Add(item);
         }
@@ -41,17 +41,17 @@ namespace ConsoleUI
             list.Clear();
         }
 
-        public bool Contains(Screen item)
+        public bool Contains(Page item)
         {
             return list.Contains(item);
         }
 
-        public void CopyTo(Screen[] array, int arrayIndex)
+        public void CopyTo(Page[] array, int arrayIndex)
         {
             list.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<Screen> GetEnumerator()
+        public IEnumerator<Page> GetEnumerator()
         {
             return list.GetEnumerator();
         }
@@ -61,7 +61,7 @@ namespace ConsoleUI
             return list.GetEnumerator();
         }
 
-        public bool Remove(Screen item)
+        public bool Remove(Page item)
         {
             return list.Remove(item);
         }

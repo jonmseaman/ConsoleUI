@@ -2,29 +2,29 @@
 
 namespace DemoApp
 {
-    internal static class LoadingScreen
+    internal static class LoadingPage
     {
-        internal static void SetupLoadingScreen(ScreenCollection screens)
+        internal static void SetupLoadingPage(Window window)
         {
-            // initialise a new instance of the helper loading screen
-            var screen = new ConsoleUI.LoadingScreen("Loading Screen");
+            // initialise a new instance of the helper loading Page
+            var page = new ConsoleUI.LoadingPage("Loading Page");
 
             // set the message text
-            screen.Message = "Doing some work, please wait";
+            page.Message = "Doing some work, please wait";
 
-            // each screen has a footer that can display text
-            screen.Footer.Text = "Working...";
+            // each Page has a footer that can display text
+            page.Footer.Text = "Working...";
 
-            // add the screen to the screens collection
-            screens.Add(screen);
+            // add the Page to the window collection
+            window.Add(page);
 
-            // there are no controls in the screen that can have the focus so
+            // there are no controls in the Page that can have the focus so
             // sleep for a bit before exiting.
-            screen.Shown += (s, e) =>
+            page.Shown += (s, e) =>
             {
                 System.Threading.Thread.Sleep(3000);
 
-                (s as Screen).Exit();
+                (s as Page).Exit();
             };
         }
     }
