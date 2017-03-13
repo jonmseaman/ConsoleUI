@@ -28,8 +28,14 @@ namespace ConsoleUI
             {
                 Console.WindowHeight = height;
                 Console.WindowWidth = width;
-                Console.BufferHeight = Console.WindowHeight;
-                Console.BufferWidth = Console.WindowWidth;
+                if (Console.BufferHeight < Console.WindowHeight)
+                {
+                    Console.BufferHeight = Console.WindowHeight;
+                }
+                if (Console.BufferWidth < Console.WindowWidth)
+                {
+                    Console.BufferWidth = Console.WindowWidth;
+                }
             }
             catch (PlatformNotSupportedException)
             {
