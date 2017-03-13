@@ -4,8 +4,14 @@ namespace ConsoleUI
 {
     public class Buffer
     {
+        public struct ConsoleCharInfo
+        {
+            public char Char;
+            public ConsoleColor ForegroundColor;
+            public ConsoleColor BackgroundColor;
+        }
         public NativeMethods.SmallRect Rectangle;
-        private NativeMethods.CharInfo[] buffer;
+        private ConsoleCharInfo[] buffer;
 
         public Buffer(int left, int top, int height, int width)
         {
@@ -14,7 +20,7 @@ namespace ConsoleUI
             Height = height;
             Width = width;
 
-            buffer = new NativeMethods.CharInfo[width * height];
+            buffer = new ConsoleCharInfo[width * height];
 
             Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
@@ -41,7 +47,7 @@ namespace ConsoleUI
 
         public int Top { get; private set; }
 
-        public NativeMethods.CharInfo[] Value
+        public ConsoleCharInfo[] Value
         {
             get
             {
@@ -57,9 +63,7 @@ namespace ConsoleUI
 
             if (index < buffer.Length)
             {
-                var attrs = buffer[index].Attributes;
-
-                return NativeMethods.ColorAttributeToConsoleColor((NativeMethods.Color)attrs & NativeMethods.Color.BackgroundMask);
+                return buffer[index].BackgroundColor;
             }
 
             return ConsoleColor.Black;
@@ -71,12 +75,10 @@ namespace ConsoleUI
 
             if (index < buffer.Length)
             {
-                var attrs = buffer[index].Attributes;
-
-                return NativeMethods.ColorAttributeToConsoleColor((NativeMethods.Color)attrs & NativeMethods.Color.ForegroundMask);
+                return buffer[index].ForegroundColor;
             }
 
-            return ConsoleColor.Black;
+            return ConsoleColor.White;
         }
 
         public void SetColor(int x, int y, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
@@ -97,7 +99,7 @@ namespace ConsoleUI
             {
                 SetColor(x, y, foregroundColor, backgroundColor);
 
-                buffer[index].Char.AsciiChar = ascii;
+                buffer[index].Char = (char)ascii;
             }
         }
 
@@ -122,19 +124,9 @@ namespace ConsoleUI
 
                 if (index < buffer.Length)
                 {
-                    var attrs = buffer[index].Attributes;
-
-                    attrs &= ~((short)NativeMethods.Color.ForegroundMask);
-                    // C#'s bitwise-or sign-extends to 32 bits.
-                    attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)fc));
-
-                    attrs &= ~((short)NativeMethods.Color.BackgroundMask);
-                    // C#'s bitwise-or sign-extends to 32 bits.
-                    attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)bc));
-
-                    buffer[index].Attributes = attrs;
-
-                    buffer[index].Char.AsciiChar = (byte)text[i];
+                    buffer[index].Char = text[i];
+                    buffer[index].ForegroundColor = foregroundColor;
+                    buffer[index].BackgroundColor = backgroundColor;
                 }
             }
         }
@@ -143,31 +135,9 @@ namespace ConsoleUI
         {
             if (index < buffer.Length)
             {
-                var fc = NativeMethods.ConsoleColorToColorAttribute(foregroundColor, false);
-                var bc = NativeMethods.ConsoleColorToColorAttribute(backgroundColor, true);
-
-                var attrs = buffer[index].Attributes;
-
-                attrs &= ~((short)NativeMethods.Color.ForegroundMask);
-                // C#'s bitwise-or sign-extends to 32 bits.
-                attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)fc));
-
-                attrs &= ~((short)NativeMethods.Color.BackgroundMask);
-                // C#'s bitwise-or sign-extends to 32 bits.
-                attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)bc));
-
-                buffer[index].Attributes = attrs;
+                buffer[index].ForegroundColor = foregroundColor;
+                buffer[index].BackgroundColor = backgroundColor;
             }
         }
-
-        //private int GetIndex(int x, int y)
-        //{
-        //    var index = (Width * y) + x;
-
-        //    if (index < buffer.Length)
-        //        return index;
-
-        //    throw new InvalidOperationException("Value is outside of the buffer.");
-        //}
     }
 }
