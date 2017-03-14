@@ -11,26 +11,27 @@ namespace DemoApp
         public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
+#if WINDOWS
 
-            //if (Console.BufferHeight < 40)
-            //{
-            //    Console.BufferHeight = 40;
-            //}
-            //if (Console.BufferWidth < 132)
-            //{
-            //    Console.BufferWidth = 132;
-            //}
+            if (Console.BufferHeight < 40)
+            {
+                Console.BufferHeight = 40;
+            }
+            if (Console.BufferWidth < 132)
+            {
+                Console.BufferWidth = 132;
+            }
 
             try
             {
-                //Console.SetWindowSize(132, 40);
-                //Console.SetBufferSize(132, 40);
+                Console.SetWindowSize(132, 40);
+                Console.SetBufferSize(132, 40);
             }
             catch (PlatformNotSupportedException)
             {
                 // Can only change the window size on Windows.                
             }
-
+#endif
             Labels.SetupLabelwindow(window);
             TextBoxes.SetupTextBoxwindow(window);
             ListBoxes.SetupListBoxwindow(window);
