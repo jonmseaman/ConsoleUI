@@ -235,12 +235,12 @@ namespace ConsoleUI
 
                 if (item.IsSeparator)
                 {
-                    Owner.Buffer.Write((short)rectangle.Left, (short)y, 195, item.ForegroundColor, item.BackgroundColor);
-                    Owner.Buffer.Write((short)rectangle.Right, (short)y, 180, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)rectangle.Left, (short)y, (char)195, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)rectangle.Right, (short)y, (char)180, item.ForegroundColor, item.BackgroundColor);
 
                     for (int i = 1; i < rectangle.Width - 1; i++)
                     {
-                        Owner.Buffer.Write((short)rectangle.Left + i, (short)y, 196, item.ForegroundColor, item.BackgroundColor);
+                        Owner.Buffer.Write((short)rectangle.Left + i, (short)y, (char)196, item.ForegroundColor, item.BackgroundColor);
                     }
                 }
 

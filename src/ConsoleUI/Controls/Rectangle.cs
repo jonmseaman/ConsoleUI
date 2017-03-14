@@ -20,7 +20,7 @@
 
                 while (y <= ClientBottom)
                 {
-                    Owner.Buffer.Write((short)x, (short)y, 32, ForegroundColor, BackgroundColor);
+                    Owner.Buffer.Write((short)x, (short)y, ' ', ForegroundColor, BackgroundColor);
 
                     y++;
                 }

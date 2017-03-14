@@ -99,15 +99,18 @@ namespace ConsoleUI
             var height = buffer.Size.Y;
             var region = buffer.Rectangle;
             var index = 0;
+            var prevLeft = Console.CursorLeft;
+            var prevTop = Console.CursorTop;
+
             for (var y = top; y < top + height; y++)
             {
+                Console.SetCursorPosition(left, y);
                 for (var x = left; x < top + width; x++)
                 {
-                    if (region.Left <= x && x <= region.Right && region.Top <= y && y <= region.Bottom)
+                    // TODO: Allow bottom right.
+                    if (region.Left <= x && x < region.Right && region.Top <= y && y < region.Bottom && index != buffer.Value.Length - 1)
                     {
                         var output = buffer.Value[index++];
-                        Console.CursorTop = y;
-                        Console.CursorLeft = x;
                         if (Console.ForegroundColor != output.ForegroundColor)
                             Console.ForegroundColor = output.ForegroundColor;
                         if (Console.BackgroundColor != output.BackgroundColor)
@@ -116,19 +119,7 @@ namespace ConsoleUI
                     }
                 }
             }
-            //bool b = WriteConsoleOutput(OutputHandle, new CharInfo[buffer.Size.X * buffer.Size.Y], 
-            //  buffer.Size,
-            //  buffer.Coord,
-            //  ref buffer.Rectangle);
-            // Paint buffer onto console window.
-
-
-            //if (!b)
-            //{
-            //    var e = new Win32Exception();
-
-            //    System.Diagnostics.Debug.WriteLine(e.Message);
-            //}
+            Console.SetCursorPosition(prevLeft, prevTop);
         }
 
         internal static void Paint(int left, int top, int height, int width, Buffer buffer)
@@ -140,6 +131,8 @@ namespace ConsoleUI
             //  buffer.Size,
             //  coord,
             //  ref rectangle);
+            var prevLeft = Console.CursorLeft;
+            var prevTop = Console.CursorTop;
             width = buffer.Size.X;
             height = buffer.Size.Y;
             var region = rectangle;
@@ -161,6 +154,7 @@ namespace ConsoleUI
                     }
                 }
             }
+            Console.SetCursorPosition(prevLeft, prevTop);
             //if (!b)
             //{
             //    var e = new Win32Exception();

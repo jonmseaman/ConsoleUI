@@ -15,8 +15,8 @@ namespace ConsoleUI
         public ConsoleColor SelectedNoFocusForegroundColor = ConsoleColor.Green;
         private int endIndex = 0;
         private List<string> items;
-        private byte ScrollBarDark = 178;
-        private byte ScrollBarLight = 176;
+        private char ScrollBarDark = (char)178;
+        private char ScrollBarLight = (char)176;
 
         //private byte ScrollBarMedium = 177;
         private int startIndex = 0;

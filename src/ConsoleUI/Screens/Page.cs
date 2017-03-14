@@ -132,7 +132,7 @@ namespace ConsoleUI
                 while (y <= height)
                 {
                     // 32 is space
-                    Buffer.Write((short)x, (short)y, 32, ForegroundColor, BackgroundColor);
+                    Buffer.Write((short)x, (short)y, ' ', ForegroundColor, BackgroundColor);
 
                     y++;
                 }

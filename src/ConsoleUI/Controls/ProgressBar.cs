@@ -141,7 +141,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < ClientWidth; i++)
             {
-                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, i <= position ? (byte)219 : (byte)32, BlockColor, BackgroundColor);
+                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, i <= position ? (char)219 : ' ', BlockColor, BackgroundColor);
             }
         }
 
@@ -177,7 +177,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < ClientWidth; i++)
             {
-                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, (i >= position1 & i <= position2) ? (byte)219 : (byte)32, BlockColor, BackgroundColor);
+                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, (i >= position1 & i <= position2) ? (char)219 : ' ', BlockColor, BackgroundColor);
             }
 
             Paint();

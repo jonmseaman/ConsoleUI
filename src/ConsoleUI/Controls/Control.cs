@@ -7,25 +7,20 @@ namespace ConsoleUI
 {
     public class Control : INotifyPropertyChanged
     {
-        //public ConsoleColor BackgroundColor = ConsoleColor.Blue;
-        //public ConsoleColor FocusBackgroundColor = ConsoleColor.Blue;
-        //public ConsoleColor FocusForegroundColor = ConsoleColor.Gray;
-        //public ConsoleColor ForegroundColor = ConsoleColor.Gray;
-        public ConsoleColor BackgroundColor = Console.BackgroundColor;
-        public ConsoleColor FocusBackgroundColor = Console.BackgroundColor;
-        public ConsoleColor FocusForegroundColor = Console.ForegroundColor;
-        public ConsoleColor ForegroundColor = Console.ForegroundColor;
+        public ConsoleColor BackgroundColor = ConsoleColor.Blue;
+        public ConsoleColor FocusBackgroundColor = ConsoleColor.Blue;
+        public ConsoleColor FocusForegroundColor = ConsoleColor.Gray;
+        public ConsoleColor ForegroundColor = ConsoleColor.Gray;
+        //public ConsoleColor BackgroundColor = Console.BackgroundColor;
+        //public ConsoleColor FocusBackgroundColor = Console.BackgroundColor;
+        //public ConsoleColor FocusForegroundColor = Console.ForegroundColor;
+        //public ConsoleColor ForegroundColor = Console.ForegroundColor;
 
         public bool HasShadow = false;
         protected int X;
         protected int Y;
         private BorderStyle borderStyle;
-        //private byte DoubleBorderBottomLeft = 200;
-        //private byte DoubleBorderBottomRight = 188;
-        //private byte DoubleBorderHorizontal = 205;
-        //private byte DoubleBorderTopLeft = 201;
-        //private byte DoubleBorderTopRight = 187;
-        //private byte DoubleBorderVertical = 186;
+
         private char DoubleBorderBottomLeft = (char)0x255A;
         private char DoubleBorderBottomRight = (char)0x255D;
         private char DoubleBorderHorizontal = (char)0x2550;
@@ -39,12 +34,12 @@ namespace ConsoleUI
         private IControlContainer owner;
 
         private Buffer preserved;
-        private byte SingleBorderBottomLeft = 192;
-        private byte SingleBorderBottomRight = 217;
-        private byte SingleBorderHorizontal = 196;
-        private byte SingleBorderTopLeft = 218;
-        private byte SingleBorderTopRight = 191;
-        private byte SingleBorderVertical = 179;
+        private char SingleBorderBottomLeft = (char)0x2514;
+        private char SingleBorderBottomRight = (char)0x2518;
+        private char SingleBorderHorizontal = (char)0x2500;
+        private char SingleBorderTopLeft = (char)0x250C;
+        private char SingleBorderTopRight = (char)0x2510;
+        private char SingleBorderVertical = (char)0x2502;
 
         private int tabOrder;
         private bool tabStop;
@@ -448,7 +443,7 @@ namespace ConsoleUI
             {
                 for (int y = Top; y < Bottom + 1; y++)
                 {
-                    Owner.Buffer.Write(x, y, 32, ForegroundColor, BackgroundColor);
+                    Owner.Buffer.Write(x, y, ' ', ForegroundColor, BackgroundColor);
                 }
             }
         }

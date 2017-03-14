@@ -26,12 +26,12 @@ namespace ConsoleUI
 
             for (int i = Left + 1; i <= Right + 1; i++)
             {
-                Owner.Buffer.Write((short)i, (short)Bottom + 1, 223, ConsoleColor.Black);
+                Owner.Buffer.Write((short)i, (short)Bottom + 1, (char)223, ConsoleColor.Black);
             }
 
             for (int i = Top; i <= Bottom; i++)
             {
-                Owner.Buffer.Write((short)Right + 1, (short)i, 220, ConsoleColor.Black);
+                Owner.Buffer.Write((short)Right + 1, (short)i, (char)220, ConsoleColor.Black);
             }
         }
 

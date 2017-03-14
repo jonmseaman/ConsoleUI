@@ -22,8 +22,8 @@ namespace DemoApp
 
             try
             {
-                Console.WindowHeight = 40;
-                Console.WindowWidth = 132;
+                Console.SetWindowSize(132, 40);
+                Console.SetBufferSize(132, 40);
             }
             catch (PlatformNotSupportedException)
             {
