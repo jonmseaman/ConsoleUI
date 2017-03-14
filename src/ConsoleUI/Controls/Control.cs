@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -19,12 +20,19 @@ namespace ConsoleUI
         protected int X;
         protected int Y;
         private BorderStyle borderStyle;
-        private byte DoubleBorderBottomLeft = 200;
-        private byte DoubleBorderBottomRight = 188;
-        private byte DoubleBorderHorizontal = 205;
-        private byte DoubleBorderTopLeft = 201;
-        private byte DoubleBorderTopRight = 187;
-        private byte DoubleBorderVertical = 186;
+        //private byte DoubleBorderBottomLeft = 200;
+        //private byte DoubleBorderBottomRight = 188;
+        //private byte DoubleBorderHorizontal = 205;
+        //private byte DoubleBorderTopLeft = 201;
+        //private byte DoubleBorderTopRight = 187;
+        //private byte DoubleBorderVertical = 186;
+        private char DoubleBorderBottomLeft = (char)0x255A;
+        private char DoubleBorderBottomRight = (char)0x255D;
+        private char DoubleBorderHorizontal = (char)0x2550;
+        private char DoubleBorderTopLeft = (char)0x2554;
+        private char DoubleBorderTopRight = (char)0x2557;
+        private char DoubleBorderVertical = (char)0x2551;
+
         private bool hasFocus;
         private int height;
         private int left;

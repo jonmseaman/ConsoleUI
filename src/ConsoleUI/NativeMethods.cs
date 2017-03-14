@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -11,6 +12,11 @@ namespace ConsoleUI
         private const int SWP_NOACTIVATE = 0x10;
 
         private const int SWP_NOZORDER = 0x4;
+
+        static NativeMethods()
+        {
+            Console.OutputEncoding = Encoding.Unicode;
+        }
 
         internal enum Color : short
         {
@@ -81,19 +87,48 @@ namespace ConsoleUI
             return rct;
         }
 
+        /// <summary>
+        /// Paints the buffer on the console window.
+        /// </summary>
+        /// <param name="buffer">The buffer which will be painted on the Console window.</param>
         internal static void Paint(Buffer buffer)
         {
-            bool b = WriteConsoleOutput(OutputHandle, buffer.Value,
-              buffer.Size,
-              buffer.Coord,
-              ref buffer.Rectangle);
-
-            if (!b)
+            var top = buffer.Coord.Y;
+            var left = buffer.Coord.X;
+            var width = buffer.Size.X;
+            var height = buffer.Size.Y;
+            var region = buffer.Rectangle;
+            var index = 0;
+            for (var y = top; y < top + height; y++)
             {
-                var e = new Win32Exception();
-
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                for (var x = left; x < top + width; x++)
+                {
+                    if (region.Left <= x && x <= region.Right && region.Top <= y && y <= region.Bottom)
+                    {
+                        var output = buffer.Value[index++];
+                        Console.CursorTop = y;
+                        Console.CursorLeft = x;
+                        if (Console.ForegroundColor != output.ForegroundColor)
+                            Console.ForegroundColor = output.ForegroundColor;
+                        if (Console.BackgroundColor != output.BackgroundColor)
+                            Console.BackgroundColor = output.BackgroundColor;
+                        Console.Write(output.Char);
+                    }
+                }
             }
+            //bool b = WriteConsoleOutput(OutputHandle, new CharInfo[buffer.Size.X * buffer.Size.Y], 
+            //  buffer.Size,
+            //  buffer.Coord,
+            //  ref buffer.Rectangle);
+            // Paint buffer onto console window.
+
+
+            //if (!b)
+            //{
+            //    var e = new Win32Exception();
+
+            //    System.Diagnostics.Debug.WriteLine(e.Message);
+            //}
         }
 
         internal static void Paint(int left, int top, int height, int width, Buffer buffer)
@@ -101,17 +136,37 @@ namespace ConsoleUI
             var rectangle = new NativeMethods.SmallRect() { Top = (short)top, Left = (short)left, Bottom = (short)(top + height), Right = (short)(left + width) };
             var coord = new NativeMethods.Coord((short)left, (short)top);
 
-            bool b = WriteConsoleOutput(OutputHandle, buffer.Value,
-              buffer.Size,
-              coord,
-              ref rectangle);
-
-            if (!b)
+            //bool b = WriteConsoleOutput(OutputHandle, new CharInfo[buffer.Size.X * buffer.Size.Y],
+            //  buffer.Size,
+            //  coord,
+            //  ref rectangle);
+            width = buffer.Size.X;
+            height = buffer.Size.Y;
+            var region = rectangle;
+            var index = 0;
+            for (var y = top; y < top + height; y++)
             {
-                var e = new Win32Exception();
-
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                for (var x = left; x < top + width; x++)
+                {
+                    if (region.Left <= x && x < region.Right && region.Top <= y && y < region.Bottom)
+                    {
+                        var output = buffer.Value[index++];
+                        Console.CursorTop = y;
+                        Console.CursorLeft = x;
+                        if (Console.ForegroundColor != output.ForegroundColor)
+                            Console.ForegroundColor = output.ForegroundColor;
+                        if (Console.BackgroundColor != output.BackgroundColor)
+                            Console.BackgroundColor = output.BackgroundColor;
+                        Console.Write(output.Char);
+                    }
+                }
             }
+            //if (!b)
+            //{
+            //    var e = new Win32Exception();
+
+            //    System.Diagnostics.Debug.WriteLine(e.Message);
+            //}
         }
 
         internal static void SetWindowPosition(int x, int y, int width, int height)

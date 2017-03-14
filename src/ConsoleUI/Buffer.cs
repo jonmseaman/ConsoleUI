@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -56,7 +57,7 @@ namespace ConsoleUI
         }
 
         public int Width { get; private set; }
-               
+
         public ConsoleColor GetBackgroundColor(int x, int y)
         {
             var index = (Width * y) + x;
@@ -91,32 +92,28 @@ namespace ConsoleUI
             }
         }
 
-        public void Write(int x, int y, byte ascii, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public void Write(int x, int y, char c, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             var index = (Width * y) + x;
 
             if (index < buffer.Length)
             {
                 SetColor(x, y, foregroundColor, backgroundColor);
-
-                buffer[index].Char = (char)ascii;
+                buffer[index].Char = c;
             }
         }
 
-        public void Write(int x, int y, byte ascii, ConsoleColor foregroundColor)
+        public void Write(int x, int y, char c, ConsoleColor foregroundColor)
         {
             var backgroundColor = GetBackgroundColor(x, y);
 
-            Write(x, y, ascii, foregroundColor, backgroundColor);
+            Write(x, y, c, foregroundColor, backgroundColor);
         }
 
         public void Write(int x, int y, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             if (string.IsNullOrEmpty(text))
                 return;
-
-            var fc = NativeMethods.ConsoleColorToColorAttribute(foregroundColor, false);
-            var bc = NativeMethods.ConsoleColorToColorAttribute(backgroundColor, true);
 
             for (int i = 0; i < text.Length; i++)
             {
