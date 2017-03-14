@@ -12,6 +12,7 @@ namespace ConsoleUI
             public ConsoleColor BackgroundColor;
         }
         public NativeMethods.SmallRect Rectangle;
+        private ConsoleCharInfo[] _prevWrite;
         private ConsoleCharInfo[] buffer;
 
         public Buffer(int left, int top, int height, int width)
@@ -21,12 +22,13 @@ namespace ConsoleUI
             Height = height;
             Width = width;
 
+            _prevWrite = new ConsoleCharInfo[width * height];
             buffer = new ConsoleCharInfo[width * height];
 
             Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
 
-        public NativeMethods.Coord Coord
+        public NativeMethods.Coord Position
         {
             get
             {
@@ -135,6 +137,47 @@ namespace ConsoleUI
                 buffer[index].ForegroundColor = foregroundColor;
                 buffer[index].BackgroundColor = backgroundColor;
             }
+        }
+
+        /// <summary>
+        /// Paints the buffer on the console window.
+        /// </summary>
+        public void Paint()
+        {
+            var prevLeft = Console.CursorLeft;
+            var prevTop = Console.CursorTop;
+            var prevFg = Console.ForegroundColor;
+            var prevBg = Console.BackgroundColor;
+
+            var sz = Size;
+            var pos = Position;
+            var reg = Rectangle;
+
+            var index = 0;
+            for (var y = pos.Y; y < pos.Y + sz.Y; y++)
+            {
+                Console.SetCursorPosition(pos.X, y);
+                for (var x = pos.X; x < pos.Y + sz.X; x++)
+                {
+                    // TODO: Allow bottom right.
+                    if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Length - 1)
+                    {
+                        var output = buffer[index++];
+                        if (output.Equals(_prevWrite[index])) continue;
+                        if (Console.ForegroundColor != output.ForegroundColor)
+                            Console.ForegroundColor = output.ForegroundColor;
+                        if (Console.BackgroundColor != output.BackgroundColor)
+                            Console.BackgroundColor = output.BackgroundColor;
+                        if (Console.CursorTop != y || Console.CursorLeft != x)
+                                Console.SetCursorPosition(x, y);
+                        Console.Write(output.Char);
+                        _prevWrite[index] = output;
+                    }
+                }
+            }
+            Console.SetCursorPosition(prevLeft, prevTop);
+            Console.ForegroundColor = prevFg;
+            Console.BackgroundColor = prevBg;
         }
     }
 }

@@ -375,7 +375,8 @@ namespace ConsoleUI
             if (args.Cancel)
                 return;
 
-            NativeMethods.Paint(Owner.Buffer);
+            Owner.Buffer.Paint();
+            //NativeMethods.Paint(Owner.Buffer);
 
             OnAfterPaint();
         }
@@ -419,7 +420,7 @@ namespace ConsoleUI
             }
 
             
-            NativeMethods.Paint(Owner.Buffer);
+            Owner.Buffer.Paint();
         }
 
         protected virtual void Blur()

@@ -162,7 +162,7 @@ namespace ConsoleUI
             if (args.Cancel)
                 return;
 
-            NativeMethods.Paint(Buffer);
+            Buffer.Paint();
 
             OnAfterPaint();
         }
