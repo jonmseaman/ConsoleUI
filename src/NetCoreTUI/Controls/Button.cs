@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class Button : InputControl
     {
@@ -37,8 +37,7 @@ namespace ConsoleUI
 
         protected virtual void OnClick()
         {
-            if (Click != null)
-                Click(this, new EventArgs());
+            Click?.Invoke(this, new System.EventArgs());
         }
 
         protected override void OnEnter()

@@ -1,14 +1,16 @@
 ﻿using System;
+using NetCoreTUI.Controls;
+using NetCoreTUI.Enums;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Screens
 {
     public class LoadingPage : Page
     {
-        private Label label;
+        private Label _label;
 
-        private ProgressBar progressBar;
+        private ProgressBar _progressBar;
 
-        private Rectangle rectangle;
+        private Rectangle _rectangle;
 
         public LoadingPage(string name) : base(name)
         {
@@ -19,40 +21,40 @@ namespace ConsoleUI
         {
             get
             {
-                return label.Text;
+                return _label.Text;
             }
             set
             {
-                label.Text = value;
+                _label.Text = value;
             }
         }
 
         private void SetupControls()
         {
-            label = new Label();
-            progressBar = new ProgressBar();
-            rectangle = new Rectangle();
+            _label = new Label();
+            _progressBar = new ProgressBar();
+            _rectangle = new Rectangle();
 
-            rectangle.BorderStyle = BorderStyle.Double;
-            rectangle.Height = 8;
-            rectangle.Width = Width - 6;
-            rectangle.Top = Height / 2 - rectangle.Height / 2;
-            rectangle.Left = Width / 2 - rectangle.Width / 2;
-            rectangle.HasShadow = true;
+            _rectangle.BorderStyle = BorderStyle.Double;
+            _rectangle.Height = 8;
+            _rectangle.Width = Width - 6;
+            _rectangle.Top = Height / 2 - _rectangle.Height / 2;
+            _rectangle.Left = Width / 2 - _rectangle.Width / 2;
+            _rectangle.HasShadow = true;
 
-            label.Width = rectangle.Width - 4;
-            label.Top = rectangle.Top + 2;
-            label.Left = rectangle.Left + 2;
-            label.TextAlign = TextAlign.Center;
+            _label.Width = _rectangle.Width - 4;
+            _label.Top = _rectangle.Top + 2;
+            _label.Left = _rectangle.Left + 2;
+            _label.TextAlign = TextAlign.Center;
 
-            progressBar.Width = label.Width / 2;
-            progressBar.ProgressBarStyle = ProgressBarStyle.Marquee;
-            progressBar.Left = Width / 2 - progressBar.Width / 2;
-            progressBar.Top = label.Top + 2;
-            progressBar.BorderStyle = BorderStyle.Single;
-            progressBar.BlockColor = ConsoleColor.Green;
+            _progressBar.Width = _label.Width / 2;
+            _progressBar.ProgressBarStyle = ProgressBarStyle.Marquee;
+            _progressBar.Left = Width / 2 - _progressBar.Width / 2;
+            _progressBar.Top = _label.Top + 2;
+            _progressBar.BorderStyle = BorderStyle.Single;
+            _progressBar.BlockColor = ConsoleColor.Green;
 
-            Controls.Add(rectangle, label, progressBar);
+            Controls.Add(_rectangle, _label, _progressBar);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetCoreTUI.Enums;
+using NetCoreTUI.EventArgs;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class ListBox : Control
     {
@@ -13,13 +15,13 @@ namespace ConsoleUI
         public int SelectedIndex = -1;
         public ConsoleColor SelectedNoFocusBackgroundColor = ConsoleColor.Blue;
         public ConsoleColor SelectedNoFocusForegroundColor = ConsoleColor.Green;
-        private int endIndex = 0;
-        private List<string> items;
-        private char ScrollBarDark = (char)178;
-        private char ScrollBarLight = (char)176;
+        private int _endIndex = 0;
+        private List<string> _items;
+        private char _scrollBarDark = (char)178;
+        private char _scrollBarLight = (char)176;
 
         //private byte ScrollBarMedium = 177;
-        private int startIndex = 0;
+        private int _startIndex = 0;
 
         public ListBox() : base()
         {
@@ -42,10 +44,10 @@ namespace ConsoleUI
         {
             get
             {
-                if (items == null)
-                    items = new List<string>();
+                if (_items == null)
+                    _items = new List<string>();
 
-                return items;
+                return _items;
             }
         }
 
@@ -66,13 +68,7 @@ namespace ConsoleUI
             }
         }
 
-        protected double ScrollBarPercent
-        {
-            get
-            {
-                return (double)CurrentIndex / (double)Items.Count;
-            }
-        }
+        protected double ScrollBarPercent => CurrentIndex / (double)Items.Count;
 
         public virtual bool OnKeyPressed(ConsoleKeyInfo info)
         {
@@ -98,13 +94,13 @@ namespace ConsoleUI
             if (maxRows > Items.Count)
                 maxRows = Items.Count;
 
-            startIndex = 0;
-            endIndex = startIndex + maxRows;
+            _startIndex = 0;
+            _endIndex = _startIndex + maxRows;
 
             if (CurrentIndex >= maxRows)
             {
-                startIndex = CurrentIndex - (maxRows - 1);
-                endIndex = CurrentIndex + 1;
+                _startIndex = CurrentIndex - (maxRows - 1);
+                _endIndex = CurrentIndex + 1;
             }
 
             var y = 0;
@@ -113,7 +109,7 @@ namespace ConsoleUI
 
             var width = HasVerticalScrollBar ? ClientWidth - 1 : ClientWidth;
 
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = _startIndex; i < _endIndex; i++)
             {
                 var label = new Label(Items[i]);
                 label.Owner = Owner;
@@ -167,8 +163,7 @@ namespace ConsoleUI
 
         protected virtual void OnSelected()
         {
-            if (Selected != null)
-                Selected(this, new EventArgs());
+            Selected?.Invoke(this, new System.EventArgs());
         }
 
         protected override void ReadKey()
@@ -272,7 +267,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < ClientHeight; i++)
             {
-                Owner.Buffer.Write((short)ClientRight, (short)ClientTop + (short)i, i == position ? ScrollBarDark : ScrollBarLight, i == position ? ConsoleColor.White : ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)ClientRight, (short)ClientTop + (short)i, i == position ? _scrollBarDark : _scrollBarLight, i == position ? ConsoleColor.White : ForegroundColor, BackgroundColor);
             }
         }
     }

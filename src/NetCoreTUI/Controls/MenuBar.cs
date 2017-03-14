@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class MenuBar : Control
     {
-        private ControlCollection<Menu> menus;
+        private ControlCollection<Menu> _menus;
 
         public MenuBar(IControlContainer owner)
         {
@@ -22,17 +22,17 @@ namespace ConsoleUI
         {
             get
             {
-                if (menus == null)
+                if (_menus == null)
                 {
-                    menus = new ControlCollection<Menu>(Owner);
+                    _menus = new ControlCollection<Menu>(Owner);
 
-                    menus.EscPressed += (s, e) =>
+                    _menus.EscPressed += (s, e) =>
                     {
                         OnTabPressed(false);
                     };
                 }
 
-                return menus;
+                return _menus;
             }
         }
 
@@ -48,11 +48,10 @@ namespace ConsoleUI
         protected override void DrawControl()
         {
             var left = 0;
-            var width = 0;
 
             foreach (var menu in Menus)
             {
-                width = menu.Text.Length;
+                var width = menu.Text.Length;
                 menu.Left = left;
                 menu.Width = width;
                 menu.Top = Top;

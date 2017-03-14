@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class MenuItem : Control
     {
-        private bool isSeparator;
+        private bool _isSeparator;
 
         public MenuItem(IControlContainer owner)
         {
@@ -22,11 +22,11 @@ namespace ConsoleUI
         {
             get
             {
-                return isSeparator;
+                return _isSeparator;
             }
             set
             {
-                SetProperty(ref isSeparator, value);
+                SetProperty(ref _isSeparator, value);
             }
         }
 
@@ -54,8 +54,7 @@ namespace ConsoleUI
 
         protected virtual void OnSelected()
         {
-            if (Selected != null)
-                Selected(this, new EventArgs());
+            Selected?.Invoke(this, new System.EventArgs());
         }
     }
 }

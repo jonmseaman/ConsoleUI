@@ -1,18 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
+using NetCoreTUI.Controls;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Screens
 {
     public class Page : IControlContainer
     {
         public ConsoleColor BackgroundColor = ConsoleColor.Gray;
         public ConsoleColor ForegroundColor = ConsoleColor.DarkGray;
-        private readonly Buffer buffer;
-        private readonly ControlCollection<Control> controls;
-        private readonly int height;
-        private readonly int width;
-        private Label footer;
-        private bool visible;
+        private readonly Buffer _buffer;
+        private readonly ControlCollection<Control> _controls;
+        private readonly int _height;
+        private readonly int _width;
+        private Label _footer;
+        private bool _visible;
 
         public Page(string name) : this(Console.WindowWidth, Console.WindowHeight, name)
         {
@@ -20,8 +21,8 @@ namespace ConsoleUI
 
         public Page(int width, int height, string name)
         {
-            this.width = width;
-            this.height = height;
+            _width = width;
+            _height = height;
 
             Name = name;
             try
@@ -44,11 +45,11 @@ namespace ConsoleUI
                 height = Console.WindowHeight;
             }
 
-            buffer = new Buffer(0, 0, height, width);
+            _buffer = new Buffer(0, 0, height, width);
 
             Clear();
 
-            controls = new ControlCollection<Control>(this);
+            _controls = new ControlCollection<Control>(this);
         }
 
         public event EventHandler AfterPaint;
@@ -61,7 +62,7 @@ namespace ConsoleUI
         {
             get
             {
-                return buffer;
+                return _buffer;
             }
         }
 
@@ -69,7 +70,7 @@ namespace ConsoleUI
         {
             get
             {
-                return controls;
+                return _controls;
             }
         }
 
@@ -77,21 +78,21 @@ namespace ConsoleUI
         {
             get
             {
-                if (footer == null)
+                if (_footer == null)
                 {
-                    footer = new Label();
+                    _footer = new Label();
 
-                    footer.Top = Console.WindowHeight - 1;
-                    footer.Left = Console.WindowLeft;
-                    footer.Width = Console.WindowWidth;
+                    _footer.Top = Console.WindowHeight - 1;
+                    _footer.Left = Console.WindowLeft;
+                    _footer.Width = Console.WindowWidth;
 
-                    footer.BackgroundColor = BackgroundColor;
-                    footer.ForegroundColor = ForegroundColor;
+                    _footer.BackgroundColor = BackgroundColor;
+                    _footer.ForegroundColor = ForegroundColor;
 
-                    footer.Owner = this;
+                    _footer.Owner = this;
                 }
 
-                return footer;
+                return _footer;
             }
         }
 
@@ -99,7 +100,7 @@ namespace ConsoleUI
         {
             get
             {
-                return height;
+                return _height;
             }
         }
 
@@ -109,7 +110,7 @@ namespace ConsoleUI
         {
             get
             {
-                return visible;
+                return _visible;
             }
         }
 
@@ -117,7 +118,7 @@ namespace ConsoleUI
         {
             get
             {
-                return width;
+                return _width;
             }
         }
 
@@ -125,11 +126,11 @@ namespace ConsoleUI
         {
             var x = 0;
 
-            while (x < width)
+            while (x < _width)
             {
                 var y = 0;
 
-                while (y <= height)
+                while (y <= _height)
                 {
                     // 32 is space
                     Buffer.Write((short)x, (short)y, ' ', ForegroundColor, BackgroundColor);
@@ -150,7 +151,7 @@ namespace ConsoleUI
 
         public void Hide()
         {
-            visible = false;
+            _visible = false;
         }
 
         public void Paint()
@@ -178,8 +179,8 @@ namespace ConsoleUI
         public void SetFooterText(string text)
         {
             Footer.Text = text;
-            footer.Draw();
-            footer.Paint();
+            _footer.Draw();
+            _footer.Paint();
         }
 
         public virtual void Show()
@@ -190,7 +191,7 @@ namespace ConsoleUI
 
             Console.CursorVisible = false;
 
-            visible = true;
+            _visible = true;
 
             Draw();
             Paint();
@@ -236,22 +237,19 @@ namespace ConsoleUI
 
         protected virtual void OnAfterPaint()
         {
-            if (AfterPaint != null)
-                AfterPaint(this, new EventArgs());
+            AfterPaint?.Invoke(this, new System.EventArgs());
         }
 
         protected virtual void OnBeforePaint(CancelEventArgs args)
         {
-            if (BeforePaint != null)
-                BeforePaint(this, args);
+            BeforePaint?.Invoke(this, args);
         }
 
         protected virtual void OnShown()
         {
-            visible = true;
+            _visible = true;
 
-            if (Shown != null)
-                Shown(this, new EventArgs());
+            Shown?.Invoke(this, new System.EventArgs());
         }
     }
 }

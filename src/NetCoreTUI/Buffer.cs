@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
-namespace ConsoleUI
+namespace NetCoreTUI
 {
     public class Buffer
     {
@@ -14,7 +11,7 @@ namespace ConsoleUI
             public ConsoleColor BackgroundColor;
         }
         public NativeMethods.SmallRect Rectangle;
-        private readonly ConsoleCharInfo[] buffer;
+
         /// <summary>
         /// Buffer which stores the current state of the console window.
         /// </summary>
@@ -36,50 +33,32 @@ namespace ConsoleUI
                 _windowWidth = Console.WindowWidth;
                 _windowBuffer = new ConsoleCharInfo[_windowWidth * _windowWidth];
             }
-            buffer = new ConsoleCharInfo[width * height];
+            Value = new ConsoleCharInfo[width * height];
 
             Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
 
-        public NativeMethods.Coord Position
-        {
-            get
-            {
-                return new NativeMethods.Coord((short)Left, (short)Top);
-            }
-        }
+        public NativeMethods.Coord Position => new NativeMethods.Coord((short)Left, (short)Top);
 
-        public int Height { get; private set; }
+        public int Height { get; }
 
-        public int Left { get; private set; }
+        public int Left { get; }
 
-        public NativeMethods.Coord Size
-        {
-            get
-            {
-                return new NativeMethods.Coord((short)Width, (short)Height);
-            }
-        }
+        public NativeMethods.Coord Size => new NativeMethods.Coord((short)Width, (short)Height);
 
-        public int Top { get; private set; }
+        public int Top { get; }
 
-        public ConsoleCharInfo[] Value
-        {
-            get
-            {
-                return buffer;
-            }
-        }
+        public ConsoleCharInfo[] Value { get; }
 
-        public int Width { get; private set; }
+        public int Width { get; }
 
         public ConsoleColor GetBackgroundColor(int x, int y)
         {
             var index = (Width * y) + x;
 
-            if (index < buffer.Length)
+            if (index < Value.Length)
             {
-                return buffer[index].BackgroundColor;
+                return Value[index].BackgroundColor;
             }
 
             return ConsoleColor.Black;
@@ -89,9 +68,9 @@ namespace ConsoleUI
         {
             var index = (Width * y) + x;
 
-            if (index < buffer.Length)
+            if (index < Value.Length)
             {
-                return buffer[index].ForegroundColor;
+                return Value[index].ForegroundColor;
             }
 
             return ConsoleColor.White;
@@ -101,7 +80,7 @@ namespace ConsoleUI
         {
             var index = (Width * y) + x;
 
-            if (index < buffer.Length)
+            if (index < Value.Length)
             {
                 SetColor(index, foregroundColor, backgroundColor);
             }
@@ -111,10 +90,10 @@ namespace ConsoleUI
         {
             var index = (Width * y) + x;
 
-            if (index < buffer.Length)
+            if (index < Value.Length)
             {
                 SetColor(x, y, foregroundColor, backgroundColor);
-                buffer[index].Char = c;
+                Value[index].Char = c;
             }
         }
 
@@ -134,21 +113,21 @@ namespace ConsoleUI
             {
                 var index = (Width * y) + x + i;
 
-                if (index < buffer.Length)
+                if (index < Value.Length)
                 {
-                    buffer[index].Char = text[i];
-                    buffer[index].ForegroundColor = foregroundColor;
-                    buffer[index].BackgroundColor = backgroundColor;
+                    Value[index].Char = text[i];
+                    Value[index].ForegroundColor = foregroundColor;
+                    Value[index].BackgroundColor = backgroundColor;
                 }
             }
         }
 
         internal void SetColor(int index, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
-            if (index < buffer.Length)
+            if (index < Value.Length)
             {
-                buffer[index].ForegroundColor = foregroundColor;
-                buffer[index].BackgroundColor = backgroundColor;
+                Value[index].ForegroundColor = foregroundColor;
+                Value[index].BackgroundColor = backgroundColor;
             }
         }
 
@@ -173,9 +152,9 @@ namespace ConsoleUI
                 for (var x = pos.X; x < pos.Y + sz.X; x++, index++)
                 {
                     // TODO: Allow bottom right.
-                    if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Length - 1)
+                    if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != Value.Length - 1)
                     {
-                        var output = buffer[index];
+                        var output = Value[index];
                         if (output.Equals(GetCachedCharInfo(x, y))) continue;
                         if (Console.ForegroundColor != output.ForegroundColor)
                             Console.ForegroundColor = output.ForegroundColor;

@@ -1,21 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading;
+using NetCoreTUI.Enums;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class ProgressBar : Control
     {
         public ConsoleColor BlockColor = ConsoleColor.White;
-        private int marqueeEnd;
-        private int marqueeStart;
-        private int maximum;
-        private int minimum;
-        private ProgressBarStyle progressBarStyle;
-        private Timer timer;
+        private int _marqueeEnd;
+        private int _marqueeStart;
+        private int _maximum;
+        private int _minimum;
+        private ProgressBarStyle _progressBarStyle;
+        private Timer _timer;
         private const char FullBlock = (char) 0x2588;
 
-        private int value;
+        private int _value;
 
         public ProgressBar()
         {
@@ -24,18 +25,18 @@ namespace ConsoleUI
             Value = 0;
             Height = 1;
             var t = TimeSpan.FromMilliseconds(100);
-            timer = new Timer(Timer_Elapsed, new AutoResetEvent(false), t, t);
+            _timer = new Timer(Timer_Elapsed, new AutoResetEvent(false), t, t);
         }
 
         public int Maximum
         {
             get
             {
-                return maximum;
+                return _maximum;
             }
             set
             {
-                SetProperty(ref maximum, value);
+                SetProperty(ref _maximum, value);
             }
         }
 
@@ -43,11 +44,11 @@ namespace ConsoleUI
         {
             get
             {
-                return minimum;
+                return _minimum;
             }
             set
             {
-                SetProperty(ref minimum, value);
+                SetProperty(ref _minimum, value);
             }
         }
 
@@ -55,11 +56,11 @@ namespace ConsoleUI
         {
             get
             {
-                return progressBarStyle;
+                return _progressBarStyle;
             }
             set
             {
-                SetProperty(ref progressBarStyle, value);
+                SetProperty(ref _progressBarStyle, value);
             }
         }
 
@@ -67,11 +68,11 @@ namespace ConsoleUI
         {
             get
             {
-                return value;
+                return _value;
             }
             set
             {
-                SetProperty(ref this.value, value);
+                SetProperty(ref _value, value);
             }
         }
 
@@ -90,7 +91,7 @@ namespace ConsoleUI
                 if (range == 0)
                     return 0;
 
-                return ((double)Value / (double)range);
+                return Value / (double)range;
             }
         }
 
@@ -159,22 +160,22 @@ namespace ConsoleUI
 
             StopTimer();
 
-            marqueeEnd += 5;
+            _marqueeEnd += 5;
 
-            if (marqueeEnd > 100)
-                marqueeEnd = 100;
+            if (_marqueeEnd > 100)
+                _marqueeEnd = 100;
 
-            if (marqueeStart < (marqueeEnd - 20) || marqueeEnd == 100)
-                marqueeStart += 5;
+            if (_marqueeStart < (_marqueeEnd - 20) || _marqueeEnd == 100)
+                _marqueeStart += 5;
 
-            if (marqueeStart > 100)
+            if (_marqueeStart > 100)
             {
-                marqueeStart = 0;
-                marqueeEnd = 0;
+                _marqueeStart = 0;
+                _marqueeEnd = 0;
             }
 
-            var position1 = (int)(ClientWidth * ((double)marqueeStart / 100));
-            var position2 = (int)(ClientWidth * ((double)marqueeEnd / 100));
+            var position1 = (int)(ClientWidth * ((double)_marqueeStart / 100));
+            var position2 = (int)(ClientWidth * ((double)_marqueeEnd / 100));
 
             for (int i = 0; i < ClientWidth; i++)
             {
@@ -194,12 +195,12 @@ namespace ConsoleUI
         private void StartTimer()
         {
             var t = TimeSpan.FromMilliseconds(100);
-            timer.Change(t, t);
+            _timer.Change(t, t);
         }
 
         private void StopTimer()
         {
-            timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
     }
 }

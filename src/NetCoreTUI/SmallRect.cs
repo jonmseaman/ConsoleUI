@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ConsoleUI
+namespace NetCoreTUI
 {
     public static partial class NativeMethods
     {

@@ -1,23 +1,21 @@
-﻿using System;
-
-namespace ConsoleUI
+﻿namespace NetCoreTUI.EventArgs
 {
-    public class TextChangedEventArgs : EventArgs
+    public class TextChangedEventArgs : System.EventArgs
     {
-        private string newText;
-        private string originalText;
+        private string _newText;
+        private string _originalText;
 
         public TextChangedEventArgs(string originalText, string newText)
         {
-            this.originalText = originalText;
-            this.newText = newText;
+            _originalText = originalText;
+            _newText = newText;
         }
 
         public string NewText
         {
             get
             {
-                return newText;
+                return _newText;
             }
         }
 
@@ -25,7 +23,7 @@ namespace ConsoleUI
         {
             get
             {
-                return originalText;
+                return _originalText;
             }
         }
     }

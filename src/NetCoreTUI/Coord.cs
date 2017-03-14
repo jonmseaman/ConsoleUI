@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ConsoleUI
+namespace NetCoreTUI
 {
     public static partial class NativeMethods
     {
@@ -10,10 +10,10 @@ namespace ConsoleUI
             public short X;
             public short Y;
 
-            public Coord(short X, short Y)
+            public Coord(short x, short y)
             {
-                this.X = X;
-                this.Y = Y;
+                X = x;
+                Y = y;
             }
         };
     }

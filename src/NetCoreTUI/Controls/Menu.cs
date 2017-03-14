@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
+using NetCoreTUI.Enums;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class Menu : Control
     {
-        private ControlCollection<MenuItem> menuItems;
-        private bool menuItemsHasFocus;
-        private Rectangle rectangle;
+        private ControlCollection<MenuItem> _menuItems;
+        private bool _menuItemsHasFocus;
+        private Rectangle _rectangle;
 
-        private bool showMenuItems;
+        private bool _showMenuItems;
 
         public Menu(IControlContainer owner)
         {
@@ -22,18 +23,18 @@ namespace ConsoleUI
             ForegroundColor = ConsoleColor.Black;
             BackgroundColor = ConsoleColor.Gray;
 
-            rectangle = new Rectangle();
-            rectangle.Owner = owner;
+            _rectangle = new Rectangle();
+            _rectangle.Owner = owner;
         }
 
         public ControlCollection<MenuItem> MenuItems
         {
             get
             {
-                if (menuItems == null)
-                    menuItems = new ControlCollection<MenuItem>(Owner);
+                if (_menuItems == null)
+                    _menuItems = new ControlCollection<MenuItem>(Owner);
 
-                return menuItems;
+                return _menuItems;
             }
         }
 
@@ -61,7 +62,7 @@ namespace ConsoleUI
         {
             base.DrawBackground();
 
-            if (!showMenuItems)
+            if (!_showMenuItems)
                 return;
 
             if (MenuItems.Count == 0)
@@ -76,19 +77,19 @@ namespace ConsoleUI
             // menu must be at least 15 characters wide
             var width = Math.Max(15,  maxLength);
 
-            rectangle.SuspendLayout();
+            _rectangle.SuspendLayout();
 
-            rectangle.Left = Left;
-            rectangle.Top = Top + 1;
-            rectangle.Height = MenuItems.Count + 2;
-            rectangle.Width = width;
-            rectangle.HasShadow = true;
-            rectangle.BorderStyle = BorderStyle.Single;
+            _rectangle.Left = Left;
+            _rectangle.Top = Top + 1;
+            _rectangle.Height = MenuItems.Count + 2;
+            _rectangle.Width = width;
+            _rectangle.HasShadow = true;
+            _rectangle.BorderStyle = BorderStyle.Single;
 
-            PreserveArea(rectangle.Left, rectangle.Top, rectangle.Height + 1, rectangle.Width + 1);
+            PreserveArea(_rectangle.Left, _rectangle.Top, _rectangle.Height + 1, _rectangle.Width + 1);
 
-            rectangle.ResumeLayout();
-            rectangle.Draw();
+            _rectangle.ResumeLayout();
+            _rectangle.Draw();
 
             DrawMenuItems();
         }
@@ -99,7 +100,7 @@ namespace ConsoleUI
 
             base.OnEnter();
 
-            showMenuItems = true;
+            _showMenuItems = true;
 
             Draw();
             Paint();
@@ -111,8 +112,8 @@ namespace ConsoleUI
         {
             base.OnLeave();
 
-            showMenuItems = false;
-            menuItemsHasFocus = false;
+            _showMenuItems = false;
+            _menuItemsHasFocus = false;
 
             MenuItems.RemoveFocus();
 
@@ -132,7 +133,7 @@ namespace ConsoleUI
                 {
                     case ConsoleKey.Enter:
                         {
-                            if (menuItemsHasFocus)
+                            if (_menuItemsHasFocus)
                             {
                                 MenuItems.GetHasFocus().Select();
 
@@ -155,7 +156,7 @@ namespace ConsoleUI
                         }
                     case ConsoleKey.Tab:
                         {
-                            if (menuItemsHasFocus)
+                            if (_menuItemsHasFocus)
                             {
                                 MenuItems.TabToNextControl(info.Modifiers.HasFlag(ConsoleModifiers.Shift));
 
@@ -190,9 +191,9 @@ namespace ConsoleUI
                         }
                     case ConsoleKey.DownArrow:
                         {
-                            if (!menuItemsHasFocus)
+                            if (!_menuItemsHasFocus)
                             {
-                                menuItemsHasFocus = true;
+                                _menuItemsHasFocus = true;
 
                                 MenuItems.SetFocus();
                             }
@@ -205,7 +206,7 @@ namespace ConsoleUI
                         }
                     case ConsoleKey.UpArrow:
                         {
-                            if (menuItemsHasFocus)
+                            if (_menuItemsHasFocus)
                             {
                                 MenuItems.TabToNextControl(true);
 
@@ -220,9 +221,9 @@ namespace ConsoleUI
 
         private void DrawMenuItems()
         {
-            var y = rectangle.ClientTop;
-            var x = rectangle.ClientLeft;
-            var width = rectangle.ClientWidth;
+            var y = _rectangle.ClientTop;
+            var x = _rectangle.ClientLeft;
+            var width = _rectangle.ClientWidth;
 
             foreach (var item in MenuItems)
             {
@@ -235,19 +236,19 @@ namespace ConsoleUI
 
                 if (item.IsSeparator)
                 {
-                    Owner.Buffer.Write((short)rectangle.Left, (short)y, (char)195, item.ForegroundColor, item.BackgroundColor);
-                    Owner.Buffer.Write((short)rectangle.Right, (short)y, (char)180, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)_rectangle.Left, (short)y, (char)195, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)_rectangle.Right, (short)y, (char)180, item.ForegroundColor, item.BackgroundColor);
 
-                    for (int i = 1; i < rectangle.Width - 1; i++)
+                    for (int i = 1; i < _rectangle.Width - 1; i++)
                     {
-                        Owner.Buffer.Write((short)rectangle.Left + i, (short)y, (char)196, item.ForegroundColor, item.BackgroundColor);
+                        Owner.Buffer.Write((short)_rectangle.Left + i, (short)y, (char)196, item.ForegroundColor, item.BackgroundColor);
                     }
                 }
 
                 y++;
             }
 
-            rectangle.Paint();
+            _rectangle.Paint();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ConsoleUI;
+﻿using NetCoreTUI.Controls;
+using NetCoreTUI.Screens;
 
 namespace DemoApp
 {

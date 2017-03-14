@@ -1,4 +1,4 @@
-﻿namespace ConsoleUI
+﻿namespace NetCoreTUI
 {
     public interface IControlContainer
     {

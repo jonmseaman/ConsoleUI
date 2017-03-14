@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace ConsoleUI
+namespace NetCoreTUI.EventArgs
 {
-    public class KeyPressedEventArgs : EventArgs
+    public class KeyPressedEventArgs : System.EventArgs
     {
-        private ConsoleKeyInfo info;
+        private ConsoleKeyInfo _info;
 
         public KeyPressedEventArgs(ConsoleKeyInfo info)
         {
-            this.info = info;
+            _info = info;
         }
 
         public bool Handled
@@ -21,7 +21,7 @@ namespace ConsoleUI
         {
             get
             {
-                return info;
+                return _info;
             }
         }
     }

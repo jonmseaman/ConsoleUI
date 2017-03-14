@@ -1,4 +1,4 @@
-﻿namespace ConsoleUI
+﻿namespace NetCoreTUI.Controls
 {
     public class Label : Control
     {

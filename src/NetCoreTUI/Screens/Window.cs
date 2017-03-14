@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Screens
 {
     public class Window : ICollection<Page>
     {
-        private IList<Page> list = new List<Page>();
+        private IList<Page> _list = new List<Page>();
 
         public int Count
         {
             get
             {
-                return list.Count;
+                return _list.Count;
             }
         }
 
@@ -19,7 +19,7 @@ namespace ConsoleUI
         {
             get
             {
-                return list.IsReadOnly;
+                return _list.IsReadOnly;
             }
         }
 
@@ -27,43 +27,43 @@ namespace ConsoleUI
         {
             get
             {
-                return list[index];
+                return _list[index];
             }
         }
 
         public void Add(Page item)
         {
-            list.Add(item);
+            _list.Add(item);
         }
 
         public void Clear()
         {
-            list.Clear();
+            _list.Clear();
         }
 
         public bool Contains(Page item)
         {
-            return list.Contains(item);
+            return _list.Contains(item);
         }
 
         public void CopyTo(Page[] array, int arrayIndex)
         {
-            list.CopyTo(array, arrayIndex);
+            _list.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<Page> GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         public bool Remove(Page item)
         {
-            return list.Remove(item);
+            return _list.Remove(item);
         }
 
         public void Show(int index)

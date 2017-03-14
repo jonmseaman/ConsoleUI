@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
+using NetCoreTUI.Enums;
+using NetCoreTUI.EventArgs;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class Control : INotifyPropertyChanged
     {
@@ -19,36 +20,36 @@ namespace ConsoleUI
         public bool HasShadow = false;
         protected int X;
         protected int Y;
-        private BorderStyle borderStyle;
+        private BorderStyle _borderStyle;
 
-        private char DoubleBorderBottomLeft = (char)0x255A;
-        private char DoubleBorderBottomRight = (char)0x255D;
-        private char DoubleBorderHorizontal = (char)0x2550;
-        private char DoubleBorderTopLeft = (char)0x2554;
-        private char DoubleBorderTopRight = (char)0x2557;
-        private char DoubleBorderVertical = (char)0x2551;
+        private char _doubleBorderBottomLeft = (char)0x255A;
+        private char _doubleBorderBottomRight = (char)0x255D;
+        private char _doubleBorderHorizontal = (char)0x2550;
+        private char _doubleBorderTopLeft = (char)0x2554;
+        private char _doubleBorderTopRight = (char)0x2557;
+        private char _doubleBorderVertical = (char)0x2551;
 
-        private bool hasFocus;
-        private int height;
-        private int left;
-        private IControlContainer owner;
+        private bool _hasFocus;
+        private int _height;
+        private int _left;
+        private IControlContainer _owner;
 
-        private Buffer preserved;
-        private char SingleBorderBottomLeft = (char)0x2514;
-        private char SingleBorderBottomRight = (char)0x2518;
-        private char SingleBorderHorizontal = (char)0x2500;
-        private char SingleBorderTopLeft = (char)0x250C;
-        private char SingleBorderTopRight = (char)0x2510;
-        private char SingleBorderVertical = (char)0x2502;
+        private Buffer _preserved;
+        private char _singleBorderBottomLeft = (char)0x2514;
+        private char _singleBorderBottomRight = (char)0x2518;
+        private char _singleBorderHorizontal = (char)0x2500;
+        private char _singleBorderTopLeft = (char)0x250C;
+        private char _singleBorderTopRight = (char)0x2510;
+        private char _singleBorderVertical = (char)0x2502;
 
-        private int tabOrder;
-        private bool tabStop;
-        private string text;
-        private TextAlign textAlign;
-        private int top;
-        private bool visible;
+        private int _tabOrder;
+        private bool _tabStop;
+        private string _text;
+        private TextAlign _textAlign;
+        private int _top;
+        private bool _visible;
 
-        private int width;
+        private int _width;
 
         public Control()
         {
@@ -84,14 +85,14 @@ namespace ConsoleUI
         {
             get
             {
-                return borderStyle;
+                return _borderStyle;
             }
             set
             {
                 if (value != BorderStyle.None && Height < 3)
                     Height = 3;
 
-                SetProperty(ref borderStyle, value);
+                SetProperty(ref _borderStyle, value);
             }
         }
 
@@ -155,11 +156,11 @@ namespace ConsoleUI
         {
             get
             {
-                return hasFocus;
+                return _hasFocus;
             }
             set
             {
-                SetProperty(ref hasFocus, value);
+                SetProperty(ref _hasFocus, value);
             }
         }
 
@@ -167,11 +168,11 @@ namespace ConsoleUI
         {
             get
             {
-                return height;
+                return _height;
             }
             set
             {
-                SetProperty(ref height, value);
+                SetProperty(ref _height, value);
             }
         }
 
@@ -179,11 +180,11 @@ namespace ConsoleUI
         {
             get
             {
-                return left;
+                return _left;
             }
             set
             {
-                SetProperty(ref left, value);
+                SetProperty(ref _left, value);
             }
         }
 
@@ -191,11 +192,11 @@ namespace ConsoleUI
         {
             get
             {
-                return owner;
+                return _owner;
             }
             set
             {
-                SetProperty(ref owner, value);
+                SetProperty(ref _owner, value);
             }
         }
 
@@ -211,11 +212,11 @@ namespace ConsoleUI
         {
             get
             {
-                return tabOrder;
+                return _tabOrder;
             }
             set
             {
-                SetProperty(ref tabOrder, value);
+                SetProperty(ref _tabOrder, value);
             }
         }
 
@@ -223,11 +224,11 @@ namespace ConsoleUI
         {
             get
             {
-                return tabStop;
+                return _tabStop;
             }
             set
             {
-                SetProperty(ref tabStop, value);
+                SetProperty(ref _tabStop, value);
             }
         }
 
@@ -235,11 +236,11 @@ namespace ConsoleUI
         {
             get
             {
-                return text;
+                return _text;
             }
             set
             {
-                SetProperty(ref text, value);
+                SetProperty(ref _text, value);
             }
         }
 
@@ -247,11 +248,11 @@ namespace ConsoleUI
         {
             get
             {
-                return textAlign;
+                return _textAlign;
             }
             set
             {
-                SetProperty(ref textAlign, value);
+                SetProperty(ref _textAlign, value);
             }
         }
 
@@ -259,11 +260,11 @@ namespace ConsoleUI
         {
             get
             {
-                return top;
+                return _top;
             }
             set
             {
-                SetProperty(ref top, value);
+                SetProperty(ref _top, value);
             }
         }
 
@@ -271,11 +272,11 @@ namespace ConsoleUI
         {
             get
             {
-                return visible;
+                return _visible;
             }
             set
             {
-                SetProperty(ref visible, value);
+                SetProperty(ref _visible, value);
             }
         }
 
@@ -283,11 +284,11 @@ namespace ConsoleUI
         {
             get
             {
-                return width;
+                return _width;
             }
             set
             {
-                SetProperty(ref width, value);
+                SetProperty(ref _width, value);
             }
         }
 
@@ -385,7 +386,7 @@ namespace ConsoleUI
             if (Owner == null)
                 return;
 
-            preserved = new Buffer(left, top, height, width);
+            _preserved = new Buffer(left, top, height, width);
 
             for (int y = 0; y < height; y++)
             {
@@ -394,7 +395,7 @@ namespace ConsoleUI
                     var sourceIndex = ((top + y) * Owner.Buffer.Width) + (left + x);
                     var targetIndex = (y * width) + x;
 
-                    preserved.Value[targetIndex] = Owner.Buffer.Value[sourceIndex];
+                    _preserved.Value[targetIndex] = Owner.Buffer.Value[sourceIndex];
                 }
             }
         }
@@ -404,17 +405,17 @@ namespace ConsoleUI
             if (Owner == null)
                 return;
 
-            if (preserved == null)
+            if (_preserved == null)
                 return;
 
-            for (int y = 0; y < preserved.Height; y++)
+            for (int y = 0; y < _preserved.Height; y++)
             {
-                for (int x = 0; x < preserved.Width; x++)
+                for (int x = 0; x < _preserved.Width; x++)
                 {
-                    var targetIndex = ((preserved.Top + y) * Owner.Buffer.Width) + (preserved.Left + x);
-                    var sourceIndex = (y * preserved.Width) + x;
+                    var targetIndex = ((_preserved.Top + y) * Owner.Buffer.Width) + (_preserved.Left + x);
+                    var sourceIndex = (y * _preserved.Width) + x;
 
-                    Owner.Buffer.Value[targetIndex] = preserved.Value[sourceIndex];
+                    Owner.Buffer.Value[targetIndex] = _preserved.Value[sourceIndex];
                 }
             }
 
@@ -523,32 +524,27 @@ namespace ConsoleUI
 
         protected virtual void OnAfterPaint()
         {
-            if (AfterPaint != null)
-                AfterPaint(this, new EventArgs());
+            AfterPaint?.Invoke(this, new System.EventArgs());
         }
 
         protected virtual void OnBeforePaint(CancelEventArgs args)
         {
-            if (BeforePaint != null)
-                BeforePaint(this, args);
+            BeforePaint?.Invoke(this, args);
         }
 
         protected virtual void OnEnter()
         {
-            if (Enter != null)
-                Enter(this, new EventArgs());
+            Enter?.Invoke(this, new System.EventArgs());
         }
 
         protected virtual void OnEscPressed()
         {
-            if (EscPressed != null)
-                EscPressed(this, new EventArgs());
+            EscPressed?.Invoke(this, new System.EventArgs());
         }
 
         protected virtual void OnLeave()
         {
-            if (Leave != null)
-                Leave(this, new EventArgs());
+            Leave?.Invoke(this, new System.EventArgs());
         }
 
         /// <summary>
@@ -561,18 +557,14 @@ namespace ConsoleUI
         /// </param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler eventHandler = this.PropertyChanged;
+            PropertyChangedEventHandler eventHandler = PropertyChanged;
 
-            if (eventHandler == null)
-                return;
-
-            eventHandler(this, new PropertyChangedEventArgs(propertyName));
+            eventHandler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnTabPressed(bool shift)
         {
-            if (TabPressed != null)
-                TabPressed(this, new TabEventArgs(shift));
+            TabPressed?.Invoke(this, new TabEventArgs(shift));
         }
 
         protected virtual string OnTruncateText(string text)
@@ -619,7 +611,7 @@ namespace ConsoleUI
             }
 
             storage = value;
-            this.OnPropertyChanged(propertyName);
+            OnPropertyChanged(propertyName);
             return true;
         }
 
@@ -673,21 +665,21 @@ namespace ConsoleUI
             if (!ShouldDraw)
                 return;
 
-            Owner.Buffer.Write((short)Left, (short)Top, DoubleBorderTopLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Top, DoubleBorderTopRight, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Left, (short)Bottom, DoubleBorderBottomLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Bottom, DoubleBorderBottomRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Top, _doubleBorderTopLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Top, _doubleBorderTopRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Bottom, _doubleBorderBottomLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Bottom, _doubleBorderBottomRight, ForegroundColor, BackgroundColor);
 
             for (int i = Left + 1; i < Right; i++)
             {
-                Owner.Buffer.Write((short)i, (short)Top, DoubleBorderHorizontal, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)i, (short)Bottom, DoubleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Top, _doubleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Bottom, _doubleBorderHorizontal, ForegroundColor, BackgroundColor);
             }
 
             for (int i = Top + 1; i < Bottom; i++)
             {
-                Owner.Buffer.Write((short)Left, (short)i, DoubleBorderVertical, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)Right, (short)i, DoubleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Left, (short)i, _doubleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Right, (short)i, _doubleBorderVertical, ForegroundColor, BackgroundColor);
             }
         }
 
@@ -696,21 +688,21 @@ namespace ConsoleUI
             if (!ShouldDraw)
                 return;
 
-            Owner.Buffer.Write((short)Left, (short)Top, SingleBorderTopLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Top, SingleBorderTopRight, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Left, (short)Bottom, SingleBorderBottomLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Bottom, SingleBorderBottomRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Top, _singleBorderTopLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Top, _singleBorderTopRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Bottom, _singleBorderBottomLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Bottom, _singleBorderBottomRight, ForegroundColor, BackgroundColor);
 
             for (int i = Left + 1; i < Right; i++)
             {
-                Owner.Buffer.Write((short)i, (short)Top, SingleBorderHorizontal, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)i, (short)Bottom, SingleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Top, _singleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Bottom, _singleBorderHorizontal, ForegroundColor, BackgroundColor);
             }
 
             for (int i = Top + 1; i < Bottom; i++)
             {
-                Owner.Buffer.Write((short)Left, (short)i, SingleBorderVertical, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)Right, (short)i, SingleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Left, (short)i, _singleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Right, (short)i, _singleBorderVertical, ForegroundColor, BackgroundColor);
             }
         }
     }

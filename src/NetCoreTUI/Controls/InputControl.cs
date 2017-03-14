@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public abstract class InputControl : Control
     {

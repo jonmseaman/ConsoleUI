@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace ConsoleUI
+﻿namespace NetCoreTUI.EventArgs
 {
-    public class TabEventArgs : EventArgs
+    public class TabEventArgs : System.EventArgs
     {
         public bool Shift { get; set; }
 

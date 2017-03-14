@@ -1,18 +1,21 @@
 ﻿using System;
+using NetCoreTUI.Controls;
+using NetCoreTUI.Enums;
+using NetCoreTUI.EventArgs;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Screens
 {
     public class LoginPage : Page
     {
-        private Button cancelButton;
-        private Label failureLabel;
-        private Button loginButton;
-        private Label passwordLabel;
-        private TextBox passwordTextBox;
-        private ProgressBar progressBar;
-        private Rectangle rectangle;
-        private Label usernameLabel;
-        private TextBox usernameTextBox;
+        private Button _cancelButton;
+        private Label _failureLabel;
+        private Button _loginButton;
+        private Label _passwordLabel;
+        private TextBox _passwordTextBox;
+        private ProgressBar _progressBar;
+        private Rectangle _rectangle;
+        private Label _usernameLabel;
+        private TextBox _usernameTextBox;
 
         public LoginPage() : this("Login Page")
         {
@@ -20,25 +23,25 @@ namespace ConsoleUI
 
         public LoginPage(string name) : base(name)
         {
-            usernameLabel = new Label();
-            passwordLabel = new Label();
-            usernameTextBox = new TextBox();
-            passwordTextBox = new TextBox();
-            rectangle = new Rectangle();
-            loginButton = new Button();
-            cancelButton = new Button();
-            failureLabel = new Label();
-            progressBar = new ProgressBar();
+            _usernameLabel = new Label();
+            _passwordLabel = new Label();
+            _usernameTextBox = new TextBox();
+            _passwordTextBox = new TextBox();
+            _rectangle = new Rectangle();
+            _loginButton = new Button();
+            _cancelButton = new Button();
+            _failureLabel = new Label();
+            _progressBar = new ProgressBar();
 
             SetupControls();
 
-            loginButton.Click += LoginButton_Click;
-            cancelButton.Click += CancelButton_Click;
-            cancelButton.EscPressed += CancelButton_Click;
-            loginButton.EscPressed += CancelButton_Click;
-            usernameTextBox.EscPressed += CancelButton_Click;
-            passwordTextBox.EscPressed += CancelButton_Click;
-            passwordTextBox.KeyPressed += PasswordTextBox_KeyPressed;
+            _loginButton.Click += LoginButton_Click;
+            _cancelButton.Click += CancelButton_Click;
+            _cancelButton.EscPressed += CancelButton_Click;
+            _loginButton.EscPressed += CancelButton_Click;
+            _usernameTextBox.EscPressed += CancelButton_Click;
+            _passwordTextBox.EscPressed += CancelButton_Click;
+            _passwordTextBox.KeyPressed += PasswordTextBox_KeyPressed;
         }
 
         public event EventHandler Cancelled;
@@ -49,11 +52,11 @@ namespace ConsoleUI
         {
             get
             {
-                return passwordTextBox.Text;
+                return _passwordTextBox.Text;
             }
             set
             {
-                passwordTextBox.Text = value;
+                _passwordTextBox.Text = value;
             }
         }
 
@@ -61,11 +64,11 @@ namespace ConsoleUI
         {
             get
             {
-                return usernameTextBox.Text;
+                return _usernameTextBox.Text;
             }
             set
             {
-                usernameTextBox.Text = value;
+                _usernameTextBox.Text = value;
             }
         }
 
@@ -80,50 +83,48 @@ namespace ConsoleUI
 
             if (string.IsNullOrWhiteSpace(Password))
             {
-                Show(passwordTextBox);
+                Show(_passwordTextBox);
 
                 return;
             }
 
-            Show(loginButton);
+            Show(_loginButton);
         }
 
         protected void OnCancel()
         {
-            if (Cancelled != null)
-                Cancelled(this, new EventArgs());
+            Cancelled?.Invoke(this, new System.EventArgs());
         }
 
         protected virtual void OnLogin(LoginEventArgs args)
         {
-            if (Login != null)
-                Login(this, args);
+            Login?.Invoke(this, args);
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, System.EventArgs e)
         {
             OnCancel();
         }
 
         private void DoLogin()
         {
-            if (!string.IsNullOrWhiteSpace(usernameTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(_usernameTextBox.Text))
             {
                 Console.CursorVisible = false;
 
-                progressBar.Visible = true;
+                _progressBar.Visible = true;
 
                 var args = new LoginEventArgs(Username, Password);
 
                 OnLogin(args);
 
-                progressBar.Visible = false;
+                _progressBar.Visible = false;
 
                 if (args.Success)
                     return;
 
-                failureLabel.Visible = true;
-                failureLabel.Text = args.FailureMessage;
+                _failureLabel.Visible = true;
+                _failureLabel.Text = args.FailureMessage;
             }
 
             Password = string.Empty;
@@ -131,10 +132,10 @@ namespace ConsoleUI
             Draw();
             Paint();
 
-            passwordTextBox.Focus();
+            _passwordTextBox.Focus();
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, System.EventArgs e)
         {
             DoLogin();
         }
@@ -160,72 +161,72 @@ namespace ConsoleUI
             var x = Width / 2;
             x -= (labelWidth + textBoxWidth) / 2;
 
-            usernameLabel.Text = "Username:";
-            usernameLabel.Width = labelWidth;
-            usernameLabel.Top = y;
-            usernameLabel.Left = x;
-            usernameLabel.ForegroundColor = ConsoleColor.Yellow;
+            _usernameLabel.Text = "Username:";
+            _usernameLabel.Width = labelWidth;
+            _usernameLabel.Top = y;
+            _usernameLabel.Left = x;
+            _usernameLabel.ForegroundColor = ConsoleColor.Yellow;
 
-            passwordLabel.Text = "Password:";
-            passwordLabel.Width = labelWidth;
-            passwordLabel.Top = y + 1;
-            passwordLabel.Left = x;
-            passwordLabel.ForegroundColor = ConsoleColor.Yellow;
+            _passwordLabel.Text = "Password:";
+            _passwordLabel.Width = labelWidth;
+            _passwordLabel.Top = y + 1;
+            _passwordLabel.Left = x;
+            _passwordLabel.ForegroundColor = ConsoleColor.Yellow;
 
-            usernameTextBox.Width = textBoxWidth;
-            usernameTextBox.Top = y;
-            usernameTextBox.Left = usernameLabel.Left + usernameLabel.Width;
+            _usernameTextBox.Width = textBoxWidth;
+            _usernameTextBox.Top = y;
+            _usernameTextBox.Left = _usernameLabel.Left + _usernameLabel.Width;
 
-            passwordTextBox.TextBoxType = TextBoxType.Password;
-            passwordTextBox.Width = textBoxWidth;
-            passwordTextBox.Top = y + 1;
-            passwordTextBox.Left = passwordLabel.Left + passwordLabel.Width;
-            passwordTextBox.TreatEnterKeyAsTab = false;
+            _passwordTextBox.TextBoxType = TextBoxType.Password;
+            _passwordTextBox.Width = textBoxWidth;
+            _passwordTextBox.Top = y + 1;
+            _passwordTextBox.Left = _passwordLabel.Left + _passwordLabel.Width;
+            _passwordTextBox.TreatEnterKeyAsTab = false;
 
-            rectangle.BorderStyle = BorderStyle.Double;
-            rectangle.Left = usernameLabel.Left - 2;
-            rectangle.Top = usernameLabel.Top - 2;
-            rectangle.Width = usernameLabel.Width + usernameTextBox.Width + 4;
-            rectangle.Height = 8;
-            rectangle.HasShadow = true;
+            _rectangle.BorderStyle = BorderStyle.Double;
+            _rectangle.Left = _usernameLabel.Left - 2;
+            _rectangle.Top = _usernameLabel.Top - 2;
+            _rectangle.Width = _usernameLabel.Width + _usernameTextBox.Width + 4;
+            _rectangle.Height = 8;
+            _rectangle.HasShadow = true;
 
-            loginButton.Text = "Login";
-            loginButton.Width = 8;
-            loginButton.Top = passwordTextBox.Top + passwordTextBox.Height + 1;
-            loginButton.Left = passwordTextBox.Left;
-            loginButton.BackgroundColor = ConsoleColor.Gray;
-            loginButton.ForegroundColor = ConsoleColor.Black;
-            loginButton.TextAlign = TextAlign.Center;
-            loginButton.HasShadow = true;
+            _loginButton.Text = "Login";
+            _loginButton.Width = 8;
+            _loginButton.Top = _passwordTextBox.Top + _passwordTextBox.Height + 1;
+            _loginButton.Left = _passwordTextBox.Left;
+            _loginButton.BackgroundColor = ConsoleColor.Gray;
+            _loginButton.ForegroundColor = ConsoleColor.Black;
+            _loginButton.TextAlign = TextAlign.Center;
+            _loginButton.HasShadow = true;
 
-            cancelButton.Text = "Cancel";
-            cancelButton.Width = 8;
-            cancelButton.Top = loginButton.Top;
-            cancelButton.Left = loginButton.Left + loginButton.Width + 1;
-            cancelButton.BackgroundColor = ConsoleColor.Gray;
-            cancelButton.ForegroundColor = ConsoleColor.Black;
-            cancelButton.TextAlign = TextAlign.Center;
-            cancelButton.HasShadow = true;
+            _cancelButton.Text = "Cancel";
+            _cancelButton.Width = 8;
+            _cancelButton.Top = _loginButton.Top;
+            _cancelButton.Left = _loginButton.Left + _loginButton.Width + 1;
+            _cancelButton.BackgroundColor = ConsoleColor.Gray;
+            _cancelButton.ForegroundColor = ConsoleColor.Black;
+            _cancelButton.TextAlign = TextAlign.Center;
+            _cancelButton.HasShadow = true;
 
-            failureLabel.Width = Width - 4;
-            failureLabel.BorderStyle = BorderStyle.Double;
-            failureLabel.HasShadow = true;
-            failureLabel.Left = (Width / 2) - (failureLabel.Width / 2);
-            failureLabel.Top = rectangle.Bottom + 3;
-            failureLabel.BackgroundColor = ConsoleColor.DarkRed;
-            failureLabel.ForegroundColor = ConsoleColor.White;
-            failureLabel.Visible = false;
+            _failureLabel.Width = Width - 4;
+            _failureLabel.BorderStyle = BorderStyle.Double;
+            _failureLabel.HasShadow = true;
+            _failureLabel.Left = (Width / 2) - (_failureLabel.Width / 2);
+            _failureLabel.Top = _rectangle.Bottom + 3;
+            _failureLabel.BackgroundColor = ConsoleColor.DarkRed;
+            _failureLabel.ForegroundColor = ConsoleColor.White;
+            _failureLabel.Visible = false;
 
-            progressBar.Top = (Height / 2) - (progressBar.Height / 2);
-            progressBar.Width = 30;
-            progressBar.Left = (Width / 2) - (progressBar.Width / 2);
-            progressBar.BorderStyle = BorderStyle.Double;
-            progressBar.BlockColor = ConsoleColor.Green;
-            progressBar.HasShadow = true;
-            progressBar.ProgressBarStyle = ProgressBarStyle.Marquee;
-            progressBar.Visible = false;
+            _progressBar.Top = (Height / 2) - (_progressBar.Height / 2);
+            _progressBar.Width = 30;
+            _progressBar.Left = (Width / 2) - (_progressBar.Width / 2);
+            _progressBar.BorderStyle = BorderStyle.Double;
+            _progressBar.BlockColor = ConsoleColor.Green;
+            _progressBar.HasShadow = true;
+            _progressBar.ProgressBarStyle = ProgressBarStyle.Marquee;
+            _progressBar.Visible = false;
 
-            Controls.Add(rectangle, usernameLabel, usernameTextBox, passwordLabel, passwordTextBox, loginButton, cancelButton, failureLabel, progressBar);
+            Controls.Add(_rectangle, _usernameLabel, _usernameTextBox, _passwordLabel, _passwordTextBox, _loginButton, _cancelButton, _failureLabel, _progressBar);
         }
     }
 }

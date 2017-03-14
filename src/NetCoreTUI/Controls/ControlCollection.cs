@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleUI
+namespace NetCoreTUI.Controls
 {
     public class ControlCollection<T> : ICollection<T> where T : Control
     {
-        private readonly IControlContainer owner;
-        private bool exit;
-        private IList<T> list = new List<T>();
-        private int tabOrder = 0;
+        private readonly IControlContainer _owner;
+        private bool _exit;
+        private IList<T> _list = new List<T>();
+        private int _tabOrder = 0;
 
         public ControlCollection(IControlContainer owner)
         {
-            this.owner = owner;
+            _owner = owner;
         }
 
         public event EventHandler EscPressed;
@@ -23,7 +23,7 @@ namespace ConsoleUI
         {
             get
             {
-                return list.Count;
+                return _list.Count;
             }
         }
 
@@ -31,7 +31,7 @@ namespace ConsoleUI
         {
             get
             {
-                return list.IsReadOnly;
+                return _list.IsReadOnly;
             }
         }
 
@@ -45,9 +45,9 @@ namespace ConsoleUI
 
         public void Add(T item)
         {
-            item.Owner = owner;
+            item.Owner = _owner;
 
-            list.Add(item);
+            _list.Add(item);
 
             var lastControl = LastControl();
 
@@ -63,12 +63,12 @@ namespace ConsoleUI
 
             item.Enter += (s, e) =>
             {
-                foreach (var control in list)
+                foreach (var control in _list)
                 {
                     control.HasFocus = control == s;
 
                     if (control == s)
-                        tabOrder = control.TabOrder;
+                        _tabOrder = control.TabOrder;
                 }
             };
 
@@ -80,62 +80,62 @@ namespace ConsoleUI
 
         public void Clear()
         {
-            list.Clear();
+            _list.Clear();
         }
 
         public bool Contains(T item)
         {
-            return list.Contains(item);
+            return _list.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            list.CopyTo(array, arrayIndex);
+            _list.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         public T GetHasFocus()
         {
-            return list.Where(p => p.HasFocus).LastOrDefault();
+            return _list.LastOrDefault(p => p.HasFocus);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         public bool Remove(T item)
         {
-            return list.Remove(item);
+            return _list.Remove(item);
         }
 
         internal void Exit()
         {
-            exit = true;
+            _exit = true;
 
             RemoveFocus();
         }
 
         internal void RemoveFocus()
         {
-            foreach (var item in list.Where(p => p.HasFocus))
+            foreach (var item in _list.Where(p => p.HasFocus))
             {
                 item.HasFocus = false;
             }
 
-            tabOrder = 0;
+            _tabOrder = 0;
         }
 
         internal void SetFocus()
         {
-            if (exit)
+            if (_exit)
                 return;
 
-            var control = list.OrderBy(p => p.TabOrder).Where(p => p.TabStop).Where(p => p.Visible).Where(p => p.TabOrder >= tabOrder).FirstOrDefault();
+            var control = _list.OrderBy(p => p.TabOrder).Where(p => p.TabStop).Where(p => p.Visible).FirstOrDefault(p => p.TabOrder >= _tabOrder);
 
             if (control == null)
                 return;
@@ -145,7 +145,7 @@ namespace ConsoleUI
 
         internal void SetFocus(T control)
         {
-            if (exit)
+            if (_exit)
                 return;
 
             control.Focus();
@@ -153,10 +153,10 @@ namespace ConsoleUI
 
         internal void TabToNextControl(bool shift)
         {
-            if (exit)
+            if (_exit)
                 return;
 
-            if (list.Where(p => p.TabStop).Where(p => p.Visible).Count() == 1)
+            if (_list.Where(p => p.TabStop).Count(p => p.Visible) == 1)
                 return;
 
             var last = LastControl();
@@ -166,35 +166,34 @@ namespace ConsoleUI
 
             var lastTabOrder = last.TabOrder;
 
-            if (shift && tabOrder > 0)
+            if (shift && _tabOrder > 0)
             {
-                var previous = list.Where(p => p.TabStop).Where(p => p.Visible).Where(p => p.TabOrder < tabOrder).OrderByDescending(p => p.TabOrder).FirstOrDefault();
+                var previous = _list.Where(p => p.TabStop).Where(p => p.Visible).Where(p => p.TabOrder < _tabOrder).OrderByDescending(p => p.TabOrder).FirstOrDefault();
 
                 if (previous != null)
-                    tabOrder = previous.TabOrder;
+                    _tabOrder = previous.TabOrder;
                 else
-                    tabOrder = last.TabOrder;
+                    _tabOrder = last.TabOrder;
             }
             else
-            if (tabOrder < lastTabOrder)
-                tabOrder++;
+            if (_tabOrder < lastTabOrder)
+                _tabOrder++;
             else
-                tabOrder = 0;
+                _tabOrder = 0;
 
             SetFocus();
         }
 
-        protected virtual void OnEscPressed(object sender, EventArgs e)
+        protected virtual void OnEscPressed(object sender, System.EventArgs e)
         {
-            tabOrder = 0;
+            _tabOrder = 0;
 
-            if (EscPressed != null)
-                EscPressed(sender, e);
+            EscPressed?.Invoke(sender, e);
         }
 
         private T LastControl()
         {
-            return list.OrderBy(p => p.TabOrder).Where(p => p.Visible).LastOrDefault();
+            return _list.OrderBy(p => p.TabOrder).LastOrDefault(p => p.Visible);
         }
     }
 }

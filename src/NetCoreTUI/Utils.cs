@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleUI
+namespace NetCoreTUI
 {
     public static class Utils
     {
@@ -12,7 +12,7 @@ namespace ConsoleUI
 
             var result = new List<string>();
 
-            if (s == null || s.Count == 0)
+            if (s.Count == 0)
                 return result.ToArray();
 
             string line = null;

@@ -1,4 +1,4 @@
-﻿using ConsoleUI;
+﻿using NetCoreTUI.Screens;
 
 namespace DemoApp
 {
@@ -7,7 +7,7 @@ namespace DemoApp
         internal static void SetupLoadingPage(Window window)
         {
             // initialise a new instance of the helper loading Page
-            var page = new ConsoleUI.LoadingPage("Loading Page");
+            var page = new NetCoreTUI.Screens.LoadingPage("Loading Page");
 
             // set the message text
             page.Message = "Doing some work, please wait";

@@ -1,4 +1,5 @@
-﻿using ConsoleUI;
+﻿using NetCoreTUI.EventArgs;
+using NetCoreTUI.Screens;
 
 namespace DemoApp
 {
@@ -11,7 +12,7 @@ namespace DemoApp
 
         private static void ListBoxPopup(Window window)
         {
-            var page = new ConsoleUI.LoginPage();
+            var page = new NetCoreTUI.Screens.LoginPage();
             page.Username = "admin";
 
             page.Footer.Text = "Try admin admin.";
