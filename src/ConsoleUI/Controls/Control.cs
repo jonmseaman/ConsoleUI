@@ -378,7 +378,8 @@ namespace ConsoleUI
             var width = HasShadow ? Width + 1 : Width;
             var height = HasShadow ? Height + 1 : Height;
 
-            NativeMethods.Paint(Left, Top, height, width, Owner.Buffer);
+            NativeMethods.Paint(Owner.Buffer);
+            //NativeMethods.Paint(Left, Top, height, width, Owner.Buffer);
 
             OnAfterPaint();
         }
@@ -421,7 +422,9 @@ namespace ConsoleUI
                 }
             }
 
-            NativeMethods.Paint(preserved.Left, preserved.Top, preserved.Height, preserved.Width, Owner.Buffer);
+            
+            NativeMethods.Paint(Owner.Buffer);
+            //NativeMethods.Paint(preserved.Left, preserved.Top, preserved.Height, preserved.Width, Owner.Buffer);
         }
 
         protected virtual void Blur()

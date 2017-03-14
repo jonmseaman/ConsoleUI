@@ -93,22 +93,23 @@ namespace ConsoleUI
         /// <param name="buffer">The buffer which will be painted on the Console window.</param>
         internal static void Paint(Buffer buffer)
         {
-            var top = buffer.Coord.Y;
-            var left = buffer.Coord.X;
-            var width = buffer.Size.X;
-            var height = buffer.Size.Y;
-            var region = buffer.Rectangle;
-            var index = 0;
             var prevLeft = Console.CursorLeft;
             var prevTop = Console.CursorTop;
+            var prevFg = Console.ForegroundColor;
+            var prevBg = Console.BackgroundColor;
 
-            for (var y = top; y < top + height; y++)
+            var sz = buffer.Size;
+            var pos = buffer.Coord;
+            var reg = buffer.Rectangle;
+
+            var index = 0;
+            for (var y = pos.Y; y < pos.Y + sz.Y; y++)
             {
-                Console.SetCursorPosition(left, y);
-                for (var x = left; x < top + width; x++)
+                Console.SetCursorPosition(pos.X, y);
+                for (var x = pos.X; x < pos.Y + sz.X; x++)
                 {
                     // TODO: Allow bottom right.
-                    if (region.Left <= x && x < region.Right && region.Top <= y && y < region.Bottom && index != buffer.Value.Length - 1)
+                    if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Value.Length - 1)
                     {
                         var output = buffer.Value[index++];
                         if (Console.ForegroundColor != output.ForegroundColor)
@@ -120,48 +121,51 @@ namespace ConsoleUI
                 }
             }
             Console.SetCursorPosition(prevLeft, prevTop);
+            Console.ForegroundColor = prevFg;
+            Console.BackgroundColor = prevBg;
         }
 
-        internal static void Paint(int left, int top, int height, int width, Buffer buffer)
-        {
-            var rectangle = new NativeMethods.SmallRect() { Top = (short)top, Left = (short)left, Bottom = (short)(top + height), Right = (short)(left + width) };
-            var coord = new NativeMethods.Coord((short)left, (short)top);
+        //internal static void Paint(int left, int top, int height, int width, Buffer buffer)
+        //{
+        //    var rectangle = new NativeMethods.SmallRect() { Top = (short)top, Left = (short)left, Bottom = (short)(top + height), Right = (short)(left + width) };
+        //    var coord = new NativeMethods.Coord((short)left, (short)top);
 
-            //bool b = WriteConsoleOutput(OutputHandle, new CharInfo[buffer.Size.X * buffer.Size.Y],
-            //  buffer.Size,
-            //  coord,
-            //  ref rectangle);
-            var prevLeft = Console.CursorLeft;
-            var prevTop = Console.CursorTop;
-            width = buffer.Size.X;
-            height = buffer.Size.Y;
-            var region = rectangle;
-            var index = 0;
-            for (var y = top; y < top + height; y++)
-            {
-                for (var x = left; x < top + width; x++)
-                {
-                    if (region.Left <= x && x < region.Right && region.Top <= y && y < region.Bottom)
-                    {
-                        var output = buffer.Value[index++];
-                        Console.CursorTop = y;
-                        Console.CursorLeft = x;
-                        if (Console.ForegroundColor != output.ForegroundColor)
-                            Console.ForegroundColor = output.ForegroundColor;
-                        if (Console.BackgroundColor != output.BackgroundColor)
-                            Console.BackgroundColor = output.BackgroundColor;
-                        Console.Write(output.Char);
-                    }
-                }
-            }
-            Console.SetCursorPosition(prevLeft, prevTop);
-            //if (!b)
-            //{
-            //    var e = new Win32Exception();
+        //    //bool b = WriteConsoleOutput(OutputHandle, new CharInfo[buffer.Size.X * buffer.Size.Y],
+        //    //  buffer.Size,
+        //    //  coord,
+        //    //  ref rectangle);
+        //    var prevLeft = Console.CursorLeft;
+        //    var prevTop = Console.CursorTop;
+        //    var prevFg = Console.ForegroundColor;
+        //    var prevBg = Console.BackgroundColor;
 
-            //    System.Diagnostics.Debug.WriteLine(e.Message);
-            //}
-        }
+        //    var sz = buffer.Size;
+        //    var pos = buffer.Coord;
+        //    var reg = rectangle;
+
+        //    var index = 0;
+        //    for (var y = pos.Y; y < pos.Y + sz.Y; y++)
+        //    {
+        //        Console.SetCursorPosition(pos.X, y);
+        //        for (var x = pos.X; x < pos.Y + sz.X; x++)
+        //        {
+        //            // TODO: Allow bottom right.
+        //            if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Value.Length - 1)
+        //            {
+        //                var output = buffer.Value[index++];
+        //                if (Console.ForegroundColor != output.ForegroundColor)
+        //                    Console.ForegroundColor = output.ForegroundColor;
+        //                if (Console.BackgroundColor != output.BackgroundColor)
+        //                    Console.BackgroundColor = output.BackgroundColor;
+        //                Console.Write(output.Char);
+        //            }
+        //        }
+        //    }
+
+        //    Console.SetCursorPosition(prevLeft, prevTop);
+        //    Console.ForegroundColor = prevFg;
+        //    Console.BackgroundColor = prevBg;
+        //}
 
         internal static void SetWindowPosition(int x, int y, int width, int height)
         {
