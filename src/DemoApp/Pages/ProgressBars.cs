@@ -23,14 +23,14 @@ namespace DemoApp
 
             page.Controls.Add(control1);
 
-            //var control2 = new ProgressBar();
+            // var control2 = new ProgressBar();
 
-            //control2.Left = 20;
-            //control2.Top = 10;
-            //control2.Width = 10;
-            //control2.BorderStyle = BorderStyle.Single;
+            // control2.Left = 20;
+            // control2.Top = 10;
+            // control2.Width = 10;
+            // control2.BorderStyle = BorderStyle.Single;
 
-            //page.Controls.Add(control2);
+            // page.Controls.Add(control2);
 
             //var control3 = new ProgressBar();
 
@@ -66,7 +66,7 @@ namespace DemoApp
                     Console.ReadKey(true);
 
                     control1.Increment(10);
-                    //control2.Increment(10);
+                    // control2.Increment(10);
                     //control3.Increment(10);
 
                     page.Footer.Text = string.Format("Value: {0}", control1.Value);

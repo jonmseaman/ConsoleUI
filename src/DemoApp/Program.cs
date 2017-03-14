@@ -10,7 +10,7 @@ namespace DemoApp
 
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.UTF8;
 
             //if (Console.BufferHeight < 40)
             //{
@@ -31,14 +31,14 @@ namespace DemoApp
                 // Can only change the window size on Windows.                
             }
 
-            //Labels.SetupLabelwindow(window);
-            //TextBoxes.SetupTextBoxwindow(window);
-            //ListBoxes.SetupListBoxwindow(window);
-            //KeyPressedEvents.SetupKeyPressedEventwindow(window);
+            Labels.SetupLabelwindow(window);
+            TextBoxes.SetupTextBoxwindow(window);
+            ListBoxes.SetupListBoxwindow(window);
+            KeyPressedEvents.SetupKeyPressedEventwindow(window);
             ProgressBars.SetupProgressBars(window);
-            //LoginPage.SetupLoginPage(window);
-            //LoadingPage.SetupLoadingPage(window);
-            //Menus.SetupMenu(window);
+            LoginPage.SetupLoginPage(window);
+            LoadingPage.SetupLoadingPage(window);
+            Menus.SetupMenu(window);
 
             Showwindow();
         }
