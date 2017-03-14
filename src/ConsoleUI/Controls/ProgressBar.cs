@@ -13,6 +13,7 @@ namespace ConsoleUI
         private int minimum;
         private ProgressBarStyle progressBarStyle;
         private Timer timer;
+        private const char FullBlock = (char) 0x2588;
 
         private int value;
 
@@ -141,7 +142,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < ClientWidth; i++)
             {
-                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, i <= position ? (char)219 : ' ', BlockColor, BackgroundColor);
+                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, i <= position ? FullBlock : ' ', BlockColor, BackgroundColor);
             }
         }
 
@@ -177,7 +178,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < ClientWidth; i++)
             {
-                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, (i >= position1 & i <= position2) ? (char)219 : ' ', BlockColor, BackgroundColor);
+                Owner.Buffer.Write((short)ClientLeft + i, (short)ClientTop, (i >= position1 & i <= position2) ? FullBlock : ' ', BlockColor, BackgroundColor);
             }
 
             Paint();

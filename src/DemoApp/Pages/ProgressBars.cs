@@ -16,44 +16,44 @@ namespace DemoApp
 
             var control1 = new ProgressBar();
 
-            control1.Left = 0;
-            control1.Top = 0;
+            control1.Left = 1;
+            control1.Top = 1;
             control1.Width = 20;
             control1.BlockColor = ConsoleColor.Yellow;
 
             page.Controls.Add(control1);
 
-            var control2 = new ProgressBar();
+            //var control2 = new ProgressBar();
 
-            control2.Left = 20;
-            control2.Top = 10;
-            control2.Width = 5;
-            control2.BorderStyle = BorderStyle.Single;
+            //control2.Left = 20;
+            //control2.Top = 10;
+            //control2.Width = 10;
+            //control2.BorderStyle = BorderStyle.Single;
 
-            page.Controls.Add(control2);
+            //page.Controls.Add(control2);
 
-            var control3 = new ProgressBar();
+            //var control3 = new ProgressBar();
 
-            control3.Left = 35;
-            control3.Top = 20;
-            control3.Width = 30;
-            control3.BorderStyle = BorderStyle.Double;
-            control3.BlockColor = ConsoleColor.Red;
-            control3.HasShadow = true;
+            //control3.Left = 35;
+            //control3.Top = 20;
+            //control3.Width = 30;
+            //control3.BorderStyle = BorderStyle.Double;
+            //control3.BlockColor = ConsoleColor.Red;
+            //control3.HasShadow = true;
 
-            page.Controls.Add(control3);
+            //page.Controls.Add(control3);
 
-            var control4 = new ProgressBar();
+            //var control4 = new ProgressBar();
 
-            control4.Left = 0;
-            control4.Top = 15;
-            control4.Width = 30;
-            control4.BorderStyle = BorderStyle.Double;
-            control4.BlockColor = ConsoleColor.Green;
-            control4.HasShadow = true;
-            control4.ProgressBarStyle = ProgressBarStyle.Marquee;
+            //control4.Left = 0;
+            //control4.Top = 15;
+            //control4.Width = 30;
+            //control4.BorderStyle = BorderStyle.Double;
+            //control4.BlockColor = ConsoleColor.Green;
+            //control4.HasShadow = true;
+            //control4.ProgressBarStyle = ProgressBarStyle.Marquee;
 
-            page.Controls.Add(control4);
+            //page.Controls.Add(control4);
 
             page.Footer.Text = page.Name + ". Press any key.";
 
@@ -66,8 +66,8 @@ namespace DemoApp
                     Console.ReadKey(true);
 
                     control1.Increment(10);
-                    control2.Increment(10);
-                    control3.Increment(10);
+                    //control2.Increment(10);
+                    //control3.Increment(10);
 
                     page.Footer.Text = string.Format("Value: {0}", control1.Value);
                 }

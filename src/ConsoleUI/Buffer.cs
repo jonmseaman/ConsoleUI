@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ConsoleUI
@@ -12,8 +14,14 @@ namespace ConsoleUI
             public ConsoleColor BackgroundColor;
         }
         public NativeMethods.SmallRect Rectangle;
-        private ConsoleCharInfo[] _prevWrite;
-        private ConsoleCharInfo[] buffer;
+        private readonly ConsoleCharInfo[] buffer;
+        /// <summary>
+        /// Buffer which stores the current state of the console window.
+        /// </summary>
+        private static ConsoleCharInfo[] _windowBuffer;
+
+        private static int _windowWidth;
+        private static int _windowHeight;
 
         public Buffer(int left, int top, int height, int width)
         {
@@ -22,7 +30,12 @@ namespace ConsoleUI
             Height = height;
             Width = width;
 
-            _prevWrite = new ConsoleCharInfo[width * height];
+            if (_windowBuffer == null)
+            {
+                _windowHeight = Console.WindowHeight;
+                _windowWidth = Console.WindowWidth;
+                _windowBuffer = new ConsoleCharInfo[_windowWidth * _windowWidth];
+            }
             buffer = new ConsoleCharInfo[width * height];
 
             Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
@@ -157,13 +170,13 @@ namespace ConsoleUI
             for (var y = pos.Y; y < pos.Y + sz.Y; y++)
             {
                 Console.SetCursorPosition(pos.X, y);
-                for (var x = pos.X; x < pos.Y + sz.X; x++)
+                for (var x = pos.X; x < pos.Y + sz.X; x++, index++)
                 {
                     // TODO: Allow bottom right.
                     if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Length - 1)
                     {
-                        var output = buffer[index++];
-                        if (output.Equals(_prevWrite[index])) continue;
+                        var output = buffer[index];
+                        if (output.Equals(GetCachedCharInfo(x, y))) continue;
                         if (Console.ForegroundColor != output.ForegroundColor)
                             Console.ForegroundColor = output.ForegroundColor;
                         if (Console.BackgroundColor != output.BackgroundColor)
@@ -171,13 +184,23 @@ namespace ConsoleUI
                         if (Console.CursorTop != y || Console.CursorLeft != x)
                                 Console.SetCursorPosition(x, y);
                         Console.Write(output.Char);
-                        _prevWrite[index] = output;
+                        CacheCharInfo(x, y, output);
                     }
                 }
             }
             Console.SetCursorPosition(prevLeft, prevTop);
             Console.ForegroundColor = prevFg;
             Console.BackgroundColor = prevBg;
+        }
+
+        private static void CacheCharInfo(int x, int y, ConsoleCharInfo info)
+        {
+            _windowBuffer[_windowWidth * y + x] = info;
+        }
+
+        private static ConsoleCharInfo GetCachedCharInfo(int x, int y)
+        {
+            return _windowBuffer[_windowWidth * y + x];
         }
     }
 }

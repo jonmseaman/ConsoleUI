@@ -12,33 +12,33 @@ namespace DemoApp
         {
             Console.OutputEncoding = Encoding.Unicode;
 
-            if (Console.BufferHeight < 40)
-            {
-                Console.BufferHeight = 40;
-            }
-            if (Console.BufferWidth < 132)
-            {
-                Console.BufferWidth = 132;
-            }
+            //if (Console.BufferHeight < 40)
+            //{
+            //    Console.BufferHeight = 40;
+            //}
+            //if (Console.BufferWidth < 132)
+            //{
+            //    Console.BufferWidth = 132;
+            //}
 
             try
             {
-                Console.SetWindowSize(132, 40);
-                Console.SetBufferSize(132, 40);
+                //Console.SetWindowSize(132, 40);
+                //Console.SetBufferSize(132, 40);
             }
             catch (PlatformNotSupportedException)
             {
                 // Can only change the window size on Windows.                
             }
 
-            Labels.SetupLabelwindow(window);
-            TextBoxes.SetupTextBoxwindow(window);
-            ListBoxes.SetupListBoxwindow(window);
-            KeyPressedEvents.SetupKeyPressedEventwindow(window);
+            //Labels.SetupLabelwindow(window);
+            //TextBoxes.SetupTextBoxwindow(window);
+            //ListBoxes.SetupListBoxwindow(window);
+            //KeyPressedEvents.SetupKeyPressedEventwindow(window);
             ProgressBars.SetupProgressBars(window);
-            LoginPage.SetupLoginPage(window);
-            LoadingPage.SetupLoadingPage(window);
-            Menus.SetupMenu(window);
+            //LoginPage.SetupLoginPage(window);
+            //LoadingPage.SetupLoadingPage(window);
+            //Menus.SetupMenu(window);
 
             Showwindow();
         }

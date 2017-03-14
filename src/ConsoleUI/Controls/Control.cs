@@ -376,7 +376,6 @@ namespace ConsoleUI
                 return;
 
             Owner.Buffer.Paint();
-            //NativeMethods.Paint(Owner.Buffer);
 
             OnAfterPaint();
         }
