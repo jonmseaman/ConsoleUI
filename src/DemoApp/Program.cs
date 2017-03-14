@@ -1,5 +1,6 @@
 ﻿using ConsoleUI;
 using System;
+using System.Text;
 
 namespace DemoApp
 {
@@ -7,9 +8,9 @@ namespace DemoApp
     {
         private static Window window = new Window();
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
 
             if (Console.BufferHeight < 40)
             {
@@ -29,8 +30,6 @@ namespace DemoApp
             {
                 // Can only change the window size on Windows.                
             }
-
-            Utils.SetWindowPosition(0, 0);
 
             Labels.SetupLabelwindow(window);
             TextBoxes.SetupTextBoxwindow(window);

@@ -51,16 +51,6 @@ namespace ConsoleUI
             return s.Substring(index, s.Length - index);
         }
 
-        public static void SetWindowPosition(int x, int y, int width, int height)
-        {
-            NativeMethods.SetWindowPosition(x, y, width, height);
-        }
-
-        public static void SetWindowPosition(int x, int y)
-        {
-            NativeMethods.SetWindowPosition(x, y);
-        }
-
         /// <summary>
         /// Splits an array of strings into a new list based on a maximum length, adding Environment.NewLine to the end of all but the last line group.
         /// </summary>
