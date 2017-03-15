@@ -1,16 +1,10 @@
 ﻿using System;
 
-namespace NetCoreTUI
+namespace NetCoreTUI.Buffers
 {
-    public class Buffer
+    internal class NetCoreBuffer : ConsoleBuffer
     {
-        public struct ConsoleCharInfo
-        {
-            public char Char;
-            public ConsoleColor ForegroundColor;
-            public ConsoleColor BackgroundColor;
-        }
-        public NativeMethods.SmallRect Rectangle;
+        public SmallRect Rectangle;
 
         /// <summary>
         /// Buffer which stores the current state of the console window.
@@ -20,13 +14,8 @@ namespace NetCoreTUI
         private static int _windowWidth;
         private static int _windowHeight;
 
-        public Buffer(int left, int top, int height, int width)
+        public NetCoreBuffer(int left, int top, int height, int width) : base(left, top, height, width)
         {
-            Left = left;
-            Top = top;
-            Height = height;
-            Width = width;
-
             if (_windowBuffer == null)
             {
                 _windowHeight = Console.WindowHeight;
@@ -35,22 +24,10 @@ namespace NetCoreTUI
             }
             Value = new ConsoleCharInfo[width * height];
 
-            Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
+            Rectangle = new SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
 
-        public NativeMethods.Coord Position => new NativeMethods.Coord((short)Left, (short)Top);
-
-        public int Height { get; }
-
-        public int Left { get; }
-
-        public NativeMethods.Coord Size => new NativeMethods.Coord((short)Width, (short)Height);
-
-        public int Top { get; }
-
         public ConsoleCharInfo[] Value { get; }
-
-        public int Width { get; }
 
         public ConsoleColor GetBackgroundColor(int x, int y)
         {
@@ -180,6 +157,16 @@ namespace NetCoreTUI
         private static ConsoleCharInfo GetCachedCharInfo(int x, int y)
         {
             return _windowBuffer[_windowWidth * y + x];
+        }
+
+        public override void SetCharInfo(int x, int y, ConsoleCharInfo charInfo)
+        {
+            Value[y * Width + x] = charInfo;
+        }
+
+        public override ConsoleCharInfo GetCharInfo(int x, int y)
+        {
+            return Value[y * Width + x];
         }
     }
 }

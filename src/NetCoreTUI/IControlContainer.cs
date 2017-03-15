@@ -1,8 +1,10 @@
-﻿namespace NetCoreTUI
+﻿using NetCoreTUI.Buffers;
+
+namespace NetCoreTUI
 {
     public interface IControlContainer
     {
-        Buffer Buffer { get; }
+        ConsoleBuffer Buffer { get; }
         bool Visible { get; }
 
         void Paint();

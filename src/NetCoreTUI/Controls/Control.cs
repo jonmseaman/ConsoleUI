@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using NetCoreTUI.Enums;
 using NetCoreTUI.EventArgs;
+using Buffer = NetCoreTUI.Buffers.ConsoleBuffer;
 
 namespace NetCoreTUI.Controls
 {
@@ -12,10 +13,6 @@ namespace NetCoreTUI.Controls
         public ConsoleColor FocusBackgroundColor = ConsoleColor.Blue;
         public ConsoleColor FocusForegroundColor = ConsoleColor.Gray;
         public ConsoleColor ForegroundColor = ConsoleColor.Gray;
-        //public ConsoleColor BackgroundColor = Console.BackgroundColor;
-        //public ConsoleColor FocusBackgroundColor = Console.BackgroundColor;
-        //public ConsoleColor FocusForegroundColor = Console.ForegroundColor;
-        //public ConsoleColor ForegroundColor = Console.ForegroundColor;
 
         public bool HasShadow = false;
         protected int X;
@@ -386,7 +383,7 @@ namespace NetCoreTUI.Controls
             if (Owner == null)
                 return;
 
-            _preserved = new Buffer(left, top, height, width);
+            _preserved = new ConsoleBuffer(left, top, height, width);
 
             for (int y = 0; y < height; y++)
             {
@@ -481,17 +478,17 @@ namespace NetCoreTUI.Controls
             var right = Right + 1;
             var bottom = Bottom + 1;
 
-            if (bottom < Owner.Buffer.Rectangle.Bottom)
+            if (bottom < Owner.Buffer.Region.Bottom)
                 for (int i = Left + 1; i <= Right + 1; i++)
                 {
-                    if (i < Owner.Buffer.Rectangle.Right)
+                    if (i < Owner.Buffer.Region.Right)
                         Owner.Buffer.SetColor((short)i, (short)bottom, ConsoleColor.DarkGray, ConsoleColor.Black);
                 }
 
-            if (right < Owner.Buffer.Rectangle.Right)
+            if (right < Owner.Buffer.Region.Right)
                 for (int i = Top + 1; i <= Bottom; i++)
                 {
-                    if (i < Owner.Buffer.Rectangle.Bottom)
+                    if (i < Owner.Buffer.Region.Bottom)
                         Owner.Buffer.SetColor((short)right, (short)i, ConsoleColor.DarkGray, ConsoleColor.Black);
                 }
         }

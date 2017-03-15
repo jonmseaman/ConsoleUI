@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using NetCoreTUI.Controls;
+using Buffer = NetCoreTUI.Buffers.Buffer;
 
 namespace NetCoreTUI.Screens
 {
