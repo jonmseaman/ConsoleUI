@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleUI;
 
 namespace NetCoreTUI.Buffers
 {
@@ -30,6 +31,23 @@ namespace NetCoreTUI.Buffers
 
         public abstract void SetCharInfo(int x, int y, ConsoleCharInfo charInfo);
         public abstract ConsoleCharInfo GetCharInfo(int x, int y);
+        public abstract void Paint();
+
+        #region Write
+        public virtual void Write(int x, int y, ConsoleColor fg)
+        {
+            var charInfo = GetCharInfo(x, y);
+            charInfo.ForegroundColor = fg;
+            SetCharInfo(x, y, charInfo);
+        }
+
+        public virtual void Write(int x, int y, ConsoleColor fg, ConsoleColor bg)
+        {
+            var charInfo = GetCharInfo(x, y);
+            charInfo.ForegroundColor = fg;
+            charInfo.BackgroundColor = bg;
+            SetCharInfo(x, y, charInfo);
+        }
 
         public virtual void Write(int x, int y, char c)
         {
@@ -38,7 +56,6 @@ namespace NetCoreTUI.Buffers
             SetCharInfo(x, y, charInfo);
         }
 
-        #region Write
         public virtual void Write(int x, int y, char c, ConsoleColor fg)
         {
             var charInfo = new ConsoleCharInfo()
@@ -58,21 +75,6 @@ namespace NetCoreTUI.Buffers
                 ForegroundColor = fg,
                 BackgroundColor = bg
             };
-            SetCharInfo(x, y, charInfo);
-        }
-
-        public virtual void Write(int x, int y, ConsoleColor fg)
-        {
-            var charInfo = GetCharInfo(x, y);
-            charInfo.ForegroundColor = fg;
-            SetCharInfo(x, y, charInfo);
-        }
-
-        public virtual void Write(int x, int y, ConsoleColor fg, ConsoleColor bg)
-        {
-            var charInfo = GetCharInfo(x, y);
-            charInfo.ForegroundColor = fg;
-            charInfo.BackgroundColor = bg;
             SetCharInfo(x, y, charInfo);
         }
 
@@ -118,7 +120,7 @@ namespace NetCoreTUI.Buffers
         public static ConsoleBuffer CreateBuffer(int left, int top, int height, int width)
         {
 #if WINDOWS
-            var buffer = null as ConsoleBuffer;
+            var buffer = new WindowsBuffer(left, top, height, width);
 #else
             var buffer = new NetCoreBuffer(left, top, height, width);
 #endif

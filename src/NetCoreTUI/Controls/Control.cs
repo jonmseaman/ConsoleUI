@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using NetCoreTUI.Buffers;
 using NetCoreTUI.Enums;
 using NetCoreTUI.EventArgs;
-using Buffer = NetCoreTUI.Buffers.ConsoleBuffer;
 
 namespace NetCoreTUI.Controls
 {
@@ -31,7 +31,7 @@ namespace NetCoreTUI.Controls
         private int _left;
         private IControlContainer _owner;
 
-        private Buffer _preserved;
+        private ConsoleBuffer _preserved;
         private char _singleBorderBottomLeft = (char)0x2514;
         private char _singleBorderBottomRight = (char)0x2518;
         private char _singleBorderHorizontal = (char)0x2500;
@@ -383,7 +383,7 @@ namespace NetCoreTUI.Controls
             if (Owner == null)
                 return;
 
-            _preserved = new ConsoleBuffer(left, top, height, width);
+            _preserved = ConsoleBuffer.CreateBuffer(left, top, height, width);
 
             for (int y = 0; y < height; y++)
             {
@@ -392,7 +392,9 @@ namespace NetCoreTUI.Controls
                     var sourceIndex = ((top + y) * Owner.Buffer.Width) + (left + x);
                     var targetIndex = (y * width) + x;
 
-                    _preserved.Value[targetIndex] = Owner.Buffer.Value[sourceIndex];
+                    var info = Owner.Buffer.GetCharInfo(x, y);
+                    _preserved.SetCharInfo(x, y, info);
+                    //_preserved.Value[targetIndex] = Owner.Buffer.Value[sourceIndex];
                 }
             }
         }
@@ -409,10 +411,14 @@ namespace NetCoreTUI.Controls
             {
                 for (int x = 0; x < _preserved.Width; x++)
                 {
+                    var tx = (_preserved.Left + x);
+                    var ty = (_preserved.Top + y);
+
                     var targetIndex = ((_preserved.Top + y) * Owner.Buffer.Width) + (_preserved.Left + x);
                     var sourceIndex = (y * _preserved.Width) + x;
 
-                    Owner.Buffer.Value[targetIndex] = _preserved.Value[sourceIndex];
+                    Owner.Buffer.SetCharInfo(tx, ty, _preserved.GetCharInfo(x, y));
+                    //Owner.Buffer.Value[targetIndex] = _preserved.Value[sourceIndex];
                 }
             }
 
@@ -482,14 +488,14 @@ namespace NetCoreTUI.Controls
                 for (int i = Left + 1; i <= Right + 1; i++)
                 {
                     if (i < Owner.Buffer.Region.Right)
-                        Owner.Buffer.SetColor((short)i, (short)bottom, ConsoleColor.DarkGray, ConsoleColor.Black);
+                        Owner.Buffer.Write(i, bottom, ConsoleColor.DarkGray, ConsoleColor.Black);
                 }
 
             if (right < Owner.Buffer.Region.Right)
                 for (int i = Top + 1; i <= Bottom; i++)
                 {
                     if (i < Owner.Buffer.Region.Bottom)
-                        Owner.Buffer.SetColor((short)right, (short)i, ConsoleColor.DarkGray, ConsoleColor.Black);
+                        Owner.Buffer.Write(i, bottom, ConsoleColor.DarkGray, ConsoleColor.Black);
                 }
         }
 

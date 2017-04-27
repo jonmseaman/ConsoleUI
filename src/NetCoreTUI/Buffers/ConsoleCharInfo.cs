@@ -8,5 +8,4 @@ namespace NetCoreTUI.Buffers
         public ConsoleColor ForegroundColor;
         public ConsoleColor BackgroundColor;
     }
-
 }

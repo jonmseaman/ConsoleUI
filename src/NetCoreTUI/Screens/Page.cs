@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using NetCoreTUI.Buffers;
 using NetCoreTUI.Controls;
-using Buffer = NetCoreTUI.Buffers.Buffer;
 
 namespace NetCoreTUI.Screens
 {
@@ -9,7 +9,7 @@ namespace NetCoreTUI.Screens
     {
         public ConsoleColor BackgroundColor = ConsoleColor.Gray;
         public ConsoleColor ForegroundColor = ConsoleColor.DarkGray;
-        private readonly Buffer _buffer;
+        private readonly ConsoleBuffer _buffer;
         private readonly ControlCollection<Control> _controls;
         private readonly int _height;
         private readonly int _width;
@@ -46,7 +46,7 @@ namespace NetCoreTUI.Screens
                 height = Console.WindowHeight;
             }
 
-            _buffer = new Buffer(0, 0, height, width);
+            _buffer = ConsoleBuffer.CreateBuffer(0, 0, height, width);
 
             Clear();
 
@@ -59,7 +59,7 @@ namespace NetCoreTUI.Screens
 
         public event EventHandler Shown;
 
-        public Buffer Buffer
+        public ConsoleBuffer Buffer
         {
             get
             {
@@ -131,9 +131,8 @@ namespace NetCoreTUI.Screens
             {
                 var y = 0;
 
-                while (y <= _height)
+                while (y < _height)
                 {
-                    // 32 is space
                     Buffer.Write((short)x, (short)y, ' ', ForegroundColor, BackgroundColor);
 
                     y++;

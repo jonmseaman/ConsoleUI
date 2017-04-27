@@ -53,65 +53,10 @@ namespace NetCoreTUI.Buffers
             return ConsoleColor.White;
         }
 
-        public void SetColor(int x, int y, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            var index = (Width * y) + x;
-
-            if (index < Value.Length)
-            {
-                SetColor(index, foregroundColor, backgroundColor);
-            }
-        }
-
-        public void Write(int x, int y, char c, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            var index = (Width * y) + x;
-
-            if (index < Value.Length)
-            {
-                SetColor(x, y, foregroundColor, backgroundColor);
-                Value[index].Char = c;
-            }
-        }
-
-        public void Write(int x, int y, char c, ConsoleColor foregroundColor)
-        {
-            var backgroundColor = GetBackgroundColor(x, y);
-
-            Write(x, y, c, foregroundColor, backgroundColor);
-        }
-
-        public void Write(int x, int y, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            if (string.IsNullOrEmpty(text))
-                return;
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                var index = (Width * y) + x + i;
-
-                if (index < Value.Length)
-                {
-                    Value[index].Char = text[i];
-                    Value[index].ForegroundColor = foregroundColor;
-                    Value[index].BackgroundColor = backgroundColor;
-                }
-            }
-        }
-
-        internal void SetColor(int index, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            if (index < Value.Length)
-            {
-                Value[index].ForegroundColor = foregroundColor;
-                Value[index].BackgroundColor = backgroundColor;
-            }
-        }
-
         /// <summary>
         /// Paints the buffer on the console window.
         /// </summary>
-        public void Paint()
+        public override void Paint()
         {
             var prevLeft = Console.CursorLeft;
             var prevTop = Console.CursorTop;
