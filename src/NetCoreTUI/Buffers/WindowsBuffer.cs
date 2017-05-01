@@ -14,9 +14,9 @@ namespace ConsoleUI
         public WindowsBuffer(int left, int top, int height, int width) : base(left, top, height, width)
         {
             buffer = new NativeMethods.CharInfo[width * height];
-            Console.OutputEncoding = Encoding.UTF8;
+
             var cp = NativeMethods.SetConsoleOutputCP(65001);
-            if (!cp) Console.WriteLine("Did not set the code page.");
+            if (!cp) throw new Exception("Failed to set code page to 65001.");
 
             Rectangle = new SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
