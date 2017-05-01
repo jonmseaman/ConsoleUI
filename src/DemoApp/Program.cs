@@ -10,7 +10,7 @@ namespace DemoApp
 
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            //Console.OutputEncoding = Encoding.UTF8;
 #if WINDOWS
 
             if (Console.BufferHeight < 40)
@@ -40,6 +40,7 @@ namespace DemoApp
             LoginPage.SetupLoginPage(window);
             LoadingPage.SetupLoadingPage(window);
             Menus.SetupMenu(window);
+            Console.ReadKey();
 
             Showwindow();
         }

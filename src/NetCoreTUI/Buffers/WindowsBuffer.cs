@@ -8,75 +8,37 @@ namespace ConsoleUI
 {
     public class WindowsBuffer : ConsoleBuffer
     {
-        public NativeMethods.SmallRect Rectangle;
-        private ConsoleCharInfo[] buffer;
+        public SmallRect Rectangle;
+        private NativeMethods.CharInfo[] buffer;
 
         public WindowsBuffer(int left, int top, int height, int width) : base(left, top, height, width)
         {
-            Left = left;
-            Top = top;
-            Height = height;
-            Width = width;
+            buffer = new NativeMethods.CharInfo[width * height];
+            Console.OutputEncoding = Encoding.UTF8;
+            var cp = NativeMethods.SetConsoleOutputCP(65001);
+            Console.WriteLine("Test Char: ");
+            Console.WriteLine(TestChar);
+            Write(5, 5, TestChar, ConsoleColor.Red, ConsoleColor.Red);
+            if (!cp) Console.WriteLine("Did not set the code page.");
+            Console.WriteLine(NativeMethods.GetConsoleOutputCP());
 
-            buffer = new ConsoleCharInfo[width * height];
-
-            Rectangle = new NativeMethods.SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
+            Rectangle = new SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
 
-        public NativeMethods.Coord Coord
+        public Coord Coord
         {
             get
             {
-                return new NativeMethods.Coord((short)Left, (short)Top);
+                return new Coord((short)Left, (short)Top);
             }
         }
 
-        public int Height { get; private set; }
-
-        public int Left { get; private set; }
-
-        public NativeMethods.Coord Size
-        {
-            get
-            {
-                return new NativeMethods.Coord((short)Width, (short)Height);
-            }
-        }
-
-        public int Top { get; private set; }
-
-        public ConsoleCharInfo[] Value
+        public NativeMethods.CharInfo[] Value
         {
             get
             {
                 return buffer;
             }
-        }
-
-        public int Width { get; private set; }
-
-        public ConsoleColor GetBackgroundColor(int x, int y)
-        {
-            var index = (Width * y) + x;
-
-            if (index < buffer.Length)
-            {
-                return buffer[index].BackgroundColor;
-            }
-
-            return ConsoleColor.Black;
-        }
-
-        public ConsoleColor GetForegroundColor(int x, int y)
-        {
-            var index = (Width * y) + x;
-
-            if (index < buffer.Length)
-            {
-                return buffer[index].ForegroundColor;
-            }
-
-            return ConsoleColor.White;
         }
 
         public override void Paint()
@@ -86,12 +48,22 @@ namespace ConsoleUI
 
         public override void SetCharInfo(int x, int y, ConsoleCharInfo charInfo)
         {
-            buffer[GetIndex(x, y)] = charInfo;
+            buffer[GetIndex(x, y)].Char.UnicodeChar = charInfo.Char;
+            buffer[GetIndex(x, y)].Char.UnicodeChar = (char)(y * Width + x);
+            buffer[GetIndex(x, y)].Char.UnicodeChar = TestChar;
+            SetColor(x, y, charInfo.ForegroundColor, charInfo.BackgroundColor);
         }
 
         public override ConsoleCharInfo GetCharInfo(int x, int y)
         {
-            return buffer[GetIndex(x, y)];
+            var native = buffer[GetIndex(x, y)];
+            var c = new ConsoleCharInfo
+            {
+                ForegroundColor = GetForegroundColor(x, y),
+                BackgroundColor = GetBackgroundColor(x, y),
+                Char = native.Char.UnicodeChar
+            };
+            return c;
         }
 
         private int GetIndex(int x, int y)
@@ -110,49 +82,53 @@ namespace ConsoleUI
             }
         }
 
-        public void Write(int x, int y, char c, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        internal void SetColor(int index, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        {
+            if (index < buffer.Length)
+            {
+                var fc = NativeMethods.ConsoleColorToColorAttribute(foregroundColor, false);
+                var bc = NativeMethods.ConsoleColorToColorAttribute(backgroundColor, true);
+
+                var attrs = buffer[index].Attributes;
+
+                attrs &= ~((short)NativeMethods.Color.ForegroundMask);
+                // C#'s bitwise-or sign-extends to 32 bits.
+                attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)fc));
+
+                attrs &= ~((short)NativeMethods.Color.BackgroundMask);
+                // C#'s bitwise-or sign-extends to 32 bits.
+                attrs = (short)(((uint)(ushort)attrs) | ((uint)(ushort)bc));
+
+                buffer[index].Attributes = attrs;
+            }
+        }
+
+        public ConsoleColor GetBackgroundColor(int x, int y)
         {
             var index = (Width * y) + x;
 
             if (index < buffer.Length)
             {
-                SetColor(x, y, foregroundColor, backgroundColor);
-                buffer[index].Char = c;
+                var attrs = buffer[index].Attributes;
+
+                return NativeMethods.ColorAttributeToConsoleColor((NativeMethods.Color)attrs & NativeMethods.Color.BackgroundMask);
             }
+
+            return ConsoleColor.Black;
         }
 
-        public void Write(int x, int y, char c, ConsoleColor foregroundColor)
+        public ConsoleColor GetForegroundColor(int x, int y)
         {
-            var backgroundColor = GetBackgroundColor(x, y);
+            var index = (Width * y) + x;
 
-            Write(x, y, c, foregroundColor, backgroundColor);
-        }
-
-        public void Write(int x, int y, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            if (string.IsNullOrEmpty(text))
-                return;
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                var index = (Width * y) + x + i;
-
-                if (index < buffer.Length)
-                {
-                    buffer[index].Char = text[i];
-                    buffer[index].ForegroundColor = foregroundColor;
-                    buffer[index].BackgroundColor = backgroundColor;
-                }
-            }
-        }
-
-        internal void SetColor(int index, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
             if (index < buffer.Length)
             {
-                buffer[index].ForegroundColor = foregroundColor;
-                buffer[index].BackgroundColor = backgroundColor;
+                var attrs = buffer[index].Attributes;
+
+                return NativeMethods.ColorAttributeToConsoleColor((NativeMethods.Color)attrs & NativeMethods.Color.ForegroundMask);
             }
+
+            return ConsoleColor.Black;
         }
     }
 }

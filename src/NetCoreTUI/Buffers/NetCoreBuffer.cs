@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace NetCoreTUI.Buffers
 {
@@ -16,6 +17,8 @@ namespace NetCoreTUI.Buffers
 
         public NetCoreBuffer(int left, int top, int height, int width) : base(left, top, height, width)
         {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine(TestChar);
             if (_windowBuffer == null)
             {
                 _windowHeight = Console.WindowHeight;

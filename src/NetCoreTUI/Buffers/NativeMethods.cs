@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Text;
+using NetCoreTUI.Buffers;
 
 namespace ConsoleUI
 {
@@ -12,11 +12,6 @@ namespace ConsoleUI
         private const int SWP_NOACTIVATE = 0x10;
 
         private const int SWP_NOZORDER = 0x4;
-
-        static NativeMethods()
-        {
-            Console.OutputEncoding = Encoding.Unicode;
-        }
 
         internal enum Color : short
         {
@@ -87,42 +82,37 @@ namespace ConsoleUI
             return rct;
         }
 
-        /// <summary>
-        /// Paints the buffer on the console window.
-        /// </summary>
-        /// <param name="buffer">The buffer which will be painted on the Console window.</param>
         internal static void Paint(WindowsBuffer buffer)
         {
-            var prevLeft = Console.CursorLeft;
-            var prevTop = Console.CursorTop;
-            var prevFg = Console.ForegroundColor;
-            var prevBg = Console.BackgroundColor;
+            bool b = WriteConsoleOutputW(OutputHandle, buffer.Value,
+              buffer.Size,
+              buffer.Coord,
+              ref buffer.Rectangle);
 
-            var sz = buffer.Size;
-            var pos = buffer.Coord;
-            var reg = buffer.Rectangle;
-
-            var index = 0;
-            for (var y = pos.Y; y < pos.Y + sz.Y; y++)
+            if (!b)
             {
-                Console.SetCursorPosition(pos.X, y);
-                for (var x = pos.X; x < pos.Y + sz.X; x++)
-                {
-                    // TODO: Allow bottom right.
-                    if (reg.Left <= x && x < reg.Right && reg.Top <= y && y < reg.Bottom && index != buffer.Value.Length - 1)
-                    {
-                        var output = buffer.Value[index++];
-                        if (Console.ForegroundColor != output.ForegroundColor)
-                            Console.ForegroundColor = output.ForegroundColor;
-                        if (Console.BackgroundColor != output.BackgroundColor)
-                            Console.BackgroundColor = output.BackgroundColor;
-                        Console.Write(output.Char);
-                    }
-                }
+                var e = new Win32Exception();
+
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            Console.SetCursorPosition(prevLeft, prevTop);
-            Console.ForegroundColor = prevFg;
-            Console.BackgroundColor = prevBg;
+        }
+
+        internal static void Paint(int left, int top, int height, int width, WindowsBuffer buffer)
+        {
+            var rectangle = new SmallRect() { Top = (short)top, Left = (short)left, Bottom = (short)(top + height), Right = (short)(left + width) };
+            var coord = new Coord((short)left, (short)top);
+
+            bool b = WriteConsoleOutputW(OutputHandle, buffer.Value,
+              buffer.Size,
+              coord,
+              ref rectangle);
+
+            if (!b)
+            {
+                var e = new Win32Exception();
+
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
         }
 
         internal static void SetWindowPosition(int x, int y, int width, int height)
@@ -138,7 +128,13 @@ namespace ConsoleUI
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern bool WriteConsoleOutput(IntPtr hConsoleOutput, CharInfo[] lpBuffer, Coord dwBufferSize, Coord dwBufferCoord, ref SmallRect lpWriteRegion);
+        internal static extern bool WriteConsoleOutputW(IntPtr hConsoleOutput, CharInfo[] lpBuffer, Coord dwBufferSize, Coord dwBufferCoord, ref SmallRect lpWriteRegion);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern bool SetConsoleOutputCP(UInt32 wCodePageID);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern uint GetConsoleOutputCP();
 
         [DllImport("kernel32")]
         static extern IntPtr GetConsoleWindow();
@@ -153,7 +149,7 @@ namespace ConsoleUI
         [DllImport("user32")]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int flags);
 
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public struct CharInfo
         {
             [FieldOffset(0)]
@@ -163,7 +159,7 @@ namespace ConsoleUI
             public short Attributes;
         }
 
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, CharSet= CharSet.Unicode)]
         public struct CharUnion
         {
             [FieldOffset(0)]
@@ -174,34 +170,12 @@ namespace ConsoleUI
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct Coord
-        {
-            public short X;
-            public short Y;
-
-            public Coord(short X, short Y)
-            {
-                this.X = X;
-                this.Y = Y;
-            }
-        };
-
-        [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
             public int Left;        // x position of upper-left corner
             public int Top;         // y position of upper-left corner
             public int Right;       // x position of lower-right corner
             public int Bottom;      // y position of lower-right corner
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SmallRect
-        {
-            public short Left;
-            public short Top;
-            public short Right;
-            public short Bottom;
         }
     }
 }
