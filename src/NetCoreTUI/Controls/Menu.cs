@@ -236,12 +236,12 @@ namespace NetCoreTUI.Controls
 
                 if (item.IsSeparator)
                 {
-                    Owner.Buffer.Write((short)_rectangle.Left, (short)y, (char)195, item.ForegroundColor, item.BackgroundColor);
-                    Owner.Buffer.Write((short)_rectangle.Right, (short)y, (char)180, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)_rectangle.Left, (short)y, (char)0x251C, item.ForegroundColor, item.BackgroundColor);
+                    Owner.Buffer.Write((short)_rectangle.Right, (short)y, (char)0x2524, item.ForegroundColor, item.BackgroundColor);
 
                     for (int i = 1; i < _rectangle.Width - 1; i++)
                     {
-                        Owner.Buffer.Write((short)_rectangle.Left + i, (short)y, (char)196, item.ForegroundColor, item.BackgroundColor);
+                        Owner.Buffer.Write((short)_rectangle.Left + i, (short)y, (char)0x2500, item.ForegroundColor, item.BackgroundColor);
                     }
                 }
 

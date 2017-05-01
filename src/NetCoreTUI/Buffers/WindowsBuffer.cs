@@ -16,11 +16,7 @@ namespace ConsoleUI
             buffer = new NativeMethods.CharInfo[width * height];
             Console.OutputEncoding = Encoding.UTF8;
             var cp = NativeMethods.SetConsoleOutputCP(65001);
-            Console.WriteLine("Test Char: ");
-            Console.WriteLine(TestChar);
-            Write(5, 5, TestChar, ConsoleColor.Red, ConsoleColor.Red);
             if (!cp) Console.WriteLine("Did not set the code page.");
-            Console.WriteLine(NativeMethods.GetConsoleOutputCP());
 
             Rectangle = new SmallRect() { Top = (short)Top, Left = (short)Left, Bottom = (short)(Top + Height), Right = (short)(Left + Width) };
         }
@@ -49,8 +45,6 @@ namespace ConsoleUI
         public override void SetCharInfo(int x, int y, ConsoleCharInfo charInfo)
         {
             buffer[GetIndex(x, y)].Char.UnicodeChar = charInfo.Char;
-            buffer[GetIndex(x, y)].Char.UnicodeChar = (char)(y * Width + x);
-            buffer[GetIndex(x, y)].Char.UnicodeChar = TestChar;
             SetColor(x, y, charInfo.ForegroundColor, charInfo.BackgroundColor);
         }
 

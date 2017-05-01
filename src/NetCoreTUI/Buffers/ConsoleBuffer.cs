@@ -117,8 +117,6 @@ namespace NetCoreTUI.Buffers
         }
         #endregion
 
-        public const char TestChar = (char)0x2562;
-
         public static ConsoleBuffer CreateBuffer(int left, int top, int height, int width)
         {
 #if WINDOWS

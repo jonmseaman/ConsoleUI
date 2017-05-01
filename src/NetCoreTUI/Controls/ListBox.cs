@@ -17,8 +17,8 @@ namespace NetCoreTUI.Controls
         public ConsoleColor SelectedNoFocusForegroundColor = ConsoleColor.Green;
         private int _endIndex = 0;
         private List<string> _items;
-        private char _scrollBarDark = (char)178;
-        private char _scrollBarLight = (char)176;
+        private char _scrollBarDark = (char)0x2593;
+        private char _scrollBarLight = (char)0x2591;
 
         //private byte ScrollBarMedium = 177;
         private int _startIndex = 0;

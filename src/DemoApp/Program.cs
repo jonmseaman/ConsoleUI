@@ -40,7 +40,6 @@ namespace DemoApp
             LoginPage.SetupLoginPage(window);
             LoadingPage.SetupLoadingPage(window);
             Menus.SetupMenu(window);
-            Console.ReadKey();
 
             Showwindow();
         }
