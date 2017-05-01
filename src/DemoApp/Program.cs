@@ -1,15 +1,18 @@
-﻿using ConsoleUI;
-using System;
+﻿using System;
+using System.Text;
+using NetCoreTUI.Screens;
 
 namespace DemoApp
 {
     internal class Program
     {
-        private static ScreenCollection screens = new ScreenCollection();
+        private static Window window = new Window();
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            //Console.OutputEncoding = Encoding.UTF8;
+#if WINDOWS
+
             if (Console.BufferHeight < 40)
             {
                 Console.BufferHeight = 40;
@@ -21,33 +24,31 @@ namespace DemoApp
 
             try
             {
-                Console.WindowHeight = 40;
-                Console.WindowWidth = 132;
+                Console.SetWindowSize(132, 40);
+                Console.SetBufferSize(132, 40);
             }
             catch (PlatformNotSupportedException)
             {
                 // Can only change the window size on Windows.                
             }
+#endif
+            Labels.SetupLabelwindow(window);
+            TextBoxes.SetupTextBoxwindow(window);
+            ListBoxes.SetupListBoxwindow(window);
+            KeyPressedEvents.SetupKeyPressedEventwindow(window);
+            ProgressBars.SetupProgressBars(window);
+            LoginPage.SetupLoginPage(window);
+            LoadingPage.SetupLoadingPage(window);
+            Menus.SetupMenu(window);
 
-            Utils.SetWindowPosition(0, 0);
-
-            Labels.SetupLabelScreens(screens);
-            TextBoxes.SetupTextBoxScreens(screens);
-            ListBoxes.SetupListBoxScreens(screens);
-            KeyPressedEvents.SetupKeyPressedEventScreens(screens);
-            ProgressBars.SetupProgressBars(screens);
-            LoginScreen.SetupLoginScreen(screens);
-            LoadingScreen.SetupLoadingScreen(screens);
-            Menus.SetupMenu(screens);
-
-            ShowScreens();
+            Showwindow();
         }
 
-        private static void ShowScreens()
+        private static void Showwindow()
         {
-            for (int i = 0; i < screens.Count; i++)
+            for (int i = 0; i < window.Count; i++)
             {
-                screens.Show(i);
+                window.Show(i);
             }
         }
     }
