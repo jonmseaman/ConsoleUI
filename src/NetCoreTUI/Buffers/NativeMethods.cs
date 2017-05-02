@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using NetCoreTUI.Buffers;
@@ -179,3 +180,4 @@ namespace ConsoleUI
         }
     }
 }
+#endif

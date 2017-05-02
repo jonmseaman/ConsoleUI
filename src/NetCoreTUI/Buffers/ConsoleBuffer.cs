@@ -1,5 +1,4 @@
 ﻿using System;
-using ConsoleUI;
 
 namespace NetCoreTUI.Buffers
 {
@@ -120,7 +119,7 @@ namespace NetCoreTUI.Buffers
         public static ConsoleBuffer CreateBuffer(int left, int top, int height, int width)
         {
 #if WINDOWS
-            var buffer = new WindowsBuffer(left, top, height, width);
+            var buffer = new ConsoleUI.WindowsBuffer(left, top, height, width);
 #else
             var buffer = new NetCoreBuffer(left, top, height, width);
 #endif
