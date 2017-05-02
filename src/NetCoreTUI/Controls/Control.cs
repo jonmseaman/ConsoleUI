@@ -19,12 +19,12 @@ namespace NetCoreTUI.Controls
         protected int Y;
         private BorderStyle _borderStyle;
 
-        private char _doubleBorderBottomLeft = (char)0x255A;
-        private char _doubleBorderBottomRight = (char)0x255D;
-        private char _doubleBorderHorizontal = (char)0x2550;
-        private char _doubleBorderTopLeft = (char)0x2554;
-        private char _doubleBorderTopRight = (char)0x2557;
-        private char _doubleBorderVertical = (char)0x2551;
+        private const char DoubleBorderBottomLeft = (char) 0x255A;
+        private const char DoubleBorderBottomRight = (char) 0x255D;
+        private const char DoubleBorderHorizontal = (char) 0x2550;
+        private const char DoubleBorderTopLeft = (char) 0x2554;
+        private const char DoubleBorderTopRight = (char) 0x2557;
+        private const char DoubleBorderVertical = (char) 0x2551;
 
         private bool _hasFocus;
         private int _height;
@@ -32,12 +32,12 @@ namespace NetCoreTUI.Controls
         private IControlContainer _owner;
 
         private ConsoleBuffer _preserved;
-        private char _singleBorderBottomLeft = (char)0x2514;
-        private char _singleBorderBottomRight = (char)0x2518;
-        private char _singleBorderHorizontal = (char)0x2500;
-        private char _singleBorderTopLeft = (char)0x250C;
-        private char _singleBorderTopRight = (char)0x2510;
-        private char _singleBorderVertical = (char)0x2502;
+        private const char SingleBorderBottomLeft = (char) 0x2514;
+        private const char SingleBorderBottomRight = (char) 0x2518;
+        private const char SingleBorderHorizontal = (char) 0x2500;
+        private const char SingleBorderTopLeft = (char) 0x250C;
+        private const char SingleBorderTopRight = (char) 0x2510;
+        private const char SingleBorderVertical = (char) 0x2502;
 
         private int _tabOrder;
         private bool _tabStop;
@@ -668,21 +668,21 @@ namespace NetCoreTUI.Controls
             if (!ShouldDraw)
                 return;
 
-            Owner.Buffer.Write((short)Left, (short)Top, _doubleBorderTopLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Top, _doubleBorderTopRight, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Left, (short)Bottom, _doubleBorderBottomLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Bottom, _doubleBorderBottomRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Top, DoubleBorderTopLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Top, DoubleBorderTopRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Bottom, DoubleBorderBottomLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Bottom, DoubleBorderBottomRight, ForegroundColor, BackgroundColor);
 
             for (int i = Left + 1; i < Right; i++)
             {
-                Owner.Buffer.Write((short)i, (short)Top, _doubleBorderHorizontal, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)i, (short)Bottom, _doubleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Top, DoubleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Bottom, DoubleBorderHorizontal, ForegroundColor, BackgroundColor);
             }
 
             for (int i = Top + 1; i < Bottom; i++)
             {
-                Owner.Buffer.Write((short)Left, (short)i, _doubleBorderVertical, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)Right, (short)i, _doubleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Left, (short)i, DoubleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Right, (short)i, DoubleBorderVertical, ForegroundColor, BackgroundColor);
             }
         }
 
@@ -691,21 +691,21 @@ namespace NetCoreTUI.Controls
             if (!ShouldDraw)
                 return;
 
-            Owner.Buffer.Write((short)Left, (short)Top, _singleBorderTopLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Top, _singleBorderTopRight, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Left, (short)Bottom, _singleBorderBottomLeft, ForegroundColor, BackgroundColor);
-            Owner.Buffer.Write((short)Right, (short)Bottom, _singleBorderBottomRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Top, SingleBorderTopLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Top, SingleBorderTopRight, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Left, (short)Bottom, SingleBorderBottomLeft, ForegroundColor, BackgroundColor);
+            Owner.Buffer.Write((short)Right, (short)Bottom, SingleBorderBottomRight, ForegroundColor, BackgroundColor);
 
             for (int i = Left + 1; i < Right; i++)
             {
-                Owner.Buffer.Write((short)i, (short)Top, _singleBorderHorizontal, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)i, (short)Bottom, _singleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Top, SingleBorderHorizontal, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)i, (short)Bottom, SingleBorderHorizontal, ForegroundColor, BackgroundColor);
             }
 
             for (int i = Top + 1; i < Bottom; i++)
             {
-                Owner.Buffer.Write((short)Left, (short)i, _singleBorderVertical, ForegroundColor, BackgroundColor);
-                Owner.Buffer.Write((short)Right, (short)i, _singleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Left, (short)i, SingleBorderVertical, ForegroundColor, BackgroundColor);
+                Owner.Buffer.Write((short)Right, (short)i, SingleBorderVertical, ForegroundColor, BackgroundColor);
             }
         }
     }
